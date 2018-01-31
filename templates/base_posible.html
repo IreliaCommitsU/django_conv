@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es">
+  <head>
+    <title>{% block title %}DEMO TITLE{% endblock %}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="{% static 'css/soldai.css' %}"/>
+	<link rel="stylesheet" href="{% static 'css/foundation.css' %}"/>
+	<link rel="stylesheet" href="{% static 'foundation-icons/foundation-icons.css' %}"/>
+	<link rel="stylesheet" href="{% static 'css/normalize.css' %}"/>
+	<link rel="stylesheet" href="{% static 'css/component.css' %}"/>
+	<link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}"/>
+	<link rel="stylesheet" href="{% static 'slick/slick.css' %}"/>
+	<link rel="stylesheet" href="{% static 'slick/slick-theme.css' %}"/>
+	<link rel="stylesheet" href="{% static 'css/croppie.css' %}"/>
+	<link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}"/>
+	<link rel="stylesheet" href="{% static 'css/app.min.css' %}"/>
+  </head>
+  {% block script_todos %}
+  <!-- Facebook Pixel Code -->
+<!--  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1691200764496972');
+  fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1691200764496972&ev=PageView&noscript=1"
+/></noscript>-->
+<!-- End Facebook Pixel Code -->
+  {% endblock %}
+  {% block script_ty %}
+  {% endblock %}
+  {% block script_login %}
+  {% endblock %}
+  <body>
+	<!-- Global site tag (gtag.js) - Google Analytics 
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-46247771-9"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+	
+	  gtag('config', 'UA-46247771-9');
+	</script>-->
+  
+  
+	{% block header %}
+	{% include "base_header.html" %}
+
+	{% endblock %}
+	
+	<div id="content" style="width:100%;" class="grid-container">
+	{% block content %}
+		<h4>CONTENT HERE.</h4>
+	{% endblock %}
+	</div>
+	{%block footer %}
+		{% include 'footer.html' %}
+	{% endblock %}
+	<script src="{% static 'js/vendor/jquery.js' %}"></script>
+	<script src="{% static 'js/vendor/foundation.js' %}"></script>
+	<script src="{% static 'js/vendor/jquery.magnific-popup.js' %}"></script>
+	<script src="{% static 'js/vendor/jquery-ui.js' %}"> </script>
+	<script src="{% static 'js/vendor/croppie.js' %}"> </script>
+	<script src="{% static 'js/slick/slick.min.js' %}"> </script>
+	<script src="{% static 'js/sidebar/classie.js' %}"> </script>
+	<script src="{% static 'js/sidebar/gnmenu.js' %}"> </script>
+	<script src="{% static 'js/posible/pos_library.js' %}"></script>
+	<script src="{% static 'js/app.js' %}"></script>
+	<!--insertar antes del cierre de body-->
+	<script src="http://soldai.com/api_files/v2/hermes.plugin.js"></script>
+	<script type="text/javascript">
+	$(function(){$('#chatHermes').hermes({key:'e2223bcdd44fc682132ba41d25f44efdb957036a',title:'Posible',css:true,form:false}); });
+	</script>
+	<!--fin código-->
+  </body>
+</html>

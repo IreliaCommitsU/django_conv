@@ -1,0 +1,63 @@
+{% extends "base_posible.html"  %}
+{% load static %}
+{%block title %} Próximamente POSiBLE 2018 {% endblock %}
+{% block header %}
+	{% include 'thank_header.html' %}
+{% endblock %}
+
+{% block content %}
+
+<div class="changePcontent">
+  <div class="grid-x">
+    <div class="cell small-12 medium-12 large-12 ch_title">
+      <h1>Generar/Cambiar contraseña</h1>
+    </div>
+    <div class="cell small-12 medium-12 large-12">
+      <div class="changZone">
+        <div class="grid-x">
+          <div class="cell small-12 medium-12 large-12 ch_title">
+            <p>
+              Bienvenido, en esta pantalla podrás generar/cambiar la contraseña del correo <strong>{{correo}}</strong>
+            </p>
+            {%if error == -1 %}
+            	<p style="color:red;">* Contraseña muy corta. (Mínimo 6 caracteres).</p>
+            {%elif error == -2 %}
+            	<p style="color:red;">* Las contraseñas no coinciden.</p>
+           	{%elif error == -3 %}
+            	<p style="color:red;">* Esta solicitud ha caducado. </p>
+            {% endif %}
+          </div>
+          <div class="cell small-12 medium-12 large-12">
+            <form id="form_change" method="POST" action="../cambiarClave/" > 
+             {% csrf_token %}
+              <div class="grid-x grid-padding-y">
+                <div class="cell small-12 medium-12 large-12 hide">
+                  <input type="hidden" name="c" value="{{correo}}"/>
+                  <input type="hidden" name="r" value={{reference}}/>
+                </div>
+                <div class="cell small-12 medium-12 large-12">
+                  <label for="pas">Ingresa una contraseña nueva:</label>
+                  <input id="pas" type="password" name="p"/>
+                </div>
+                <div class="cell small-12 medium-12 large-12">
+                  <label for="pas_conf">Confirma tu contraseña:</label>
+                  <input id="pas_conf" type="password" name="p_conf"/>
+                </div>
+                <div class="cell small-12 medium-12 large-12 popupButtons bolding">
+                	{%if error != -3 %}
+                		<input class="button warning " type="submit" value="Cambiar contraseña"> 
+                	{% else %}
+                		<a class="button warning" href="../login/"><strong>Volver a inicio</strong></a>
+                	{% endif %}
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+

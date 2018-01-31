@@ -1,0 +1,10 @@
+<div class="grid-x grid-padding-x">
+{% for p in fields %}
+	<div class="cell small-12 medium-4 large-4">
+	<label {{p.for_label}}> {{p.label_tag}}</label>
+	{{p.input}}
+	</div>
+{% endfor %}
+</div>
+
+

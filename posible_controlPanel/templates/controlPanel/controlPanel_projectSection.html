@@ -1,0 +1,73 @@
+<div class="grid-x">
+    <div class="cell small-12 medium-4 large-4">
+      <h4 class="titles">Avance de proyecto(s)</h4>
+    </div>
+    <div class="cell small-12 medium-8 large-8">
+      <p class="projectLimitInfo"><strong>* Recuerda que tienes un límite de 3 proyectos por usuario.</strong></p>
+    </div>
+	<div class="cell small-12 medium-12 large-12 projectGrouped">
+		<div class="grid-x grid-padding-x">
+			{% for p in lista_p %}
+				<div class="cell small-4 medium-4 large-4">
+				{% if p.type == 'project' %}
+					<div class="projectDiv_Section">
+			          <div class="grid-x grid-margin-x cardProjectMain">
+			            <div class="cell small-12 medium-12 large-12">
+			              <div style="background-image: url('{{p.img_url}}');" class="img_project"></div>
+			            </div>
+			            <div class="cell small-12 medium-12 large-12 cardProjectSummary">
+			              <h5 class="subtitles">Nombre del proyecto</h5>
+			              <p class="info">{{p.name}}</p>
+			              <div class="cell small-12 medium-12 large-12">
+			                <h5 class="subtitles">Folio</h5>
+			                
+			                {% if p.status == 'borrador' %}
+			                	<p>*Se le asignará un folio cuando lo envíes a revisión </p>
+			                {%else%}
+			                	{%if p.f_rev %}
+			                		<p class="info"> {{p.f_rev|date:'Ymd'}}{{p.idn}} </p> 
+			                	{%else%}
+			                		<p> *contacta a POSiBLE por tu folio </p>
+			                	{% endif %}
+			                	<br/>
+			                {%endif%}
+			              </div>
+			            </div>
+			          </div>
+			          <div class="grid-x grid-padding-x cardProjectOverlay">
+			            <div class="cell small-12 medium-12 large-12 cardProjectInfo">
+			              <div class="grid-x">
+			              	{%if p.status == 'borrador'%} 
+			                <div class="cell small-12 medium-12 large-12 projectButtons"><a href="./proyecto/{{p.idn}}/1/" class="button warning"><strong>Editar proyecto</strong></a></div>
+			                {% endif %}
+			                {%if p.status != 'borrador'%} 
+			                <div class="cell small-12 medium-12 large-12 projectButtons"><a href="./proyecto/{{p.idn}}/pdf/" class="button warning"><strong>Generar PDF</strong></a></div>
+			                {%endif%}
+			                {%if p.status == 'borrador'%} 
+			                <div class="cell small-12 medium-12 large-12 projectButtons"><a href="#popup_REV{{p.idn}}" class="button warning"><strong>Enviar a revisión</strong></a></div>
+			                {% endif %} 
+			                <div class="cell small-12 medium-12 large-12">
+			                  <div role="progressbar" tabindex="0" aria-valuenow="{{p.avance}}" aria-valuemin="0" aria-valuetext="{{p.avance}}%" aria-valuemax="100" class="progress bigProgressBar warning"><span style="width: {{p.avance}}%" class="progress-meter">
+			                      <p class="progress-meter-text">{{p.avance}}%</p></span></div>
+			                </div>
+			              </div>
+			            </div>
+			          </div>
+			        </div>
+				{% elif p.type == 'EMPTY' %}
+					<div class="grid-x grid-margin-x cardProjectEmpty">
+						<div class="cell small-12 medium-12 large-12">
+						  	<a href="./nuevoProyecto/">
+								<div class="projectEmpty">
+									<h3>Nuevo proyecto</h3><br/><br/><br/>
+									<p class="info">Da click aquí</p><br/><br/>
+								</div>
+						     </a>
+						</div>
+					</div>
+				{% endif %}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>

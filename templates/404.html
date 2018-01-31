@@ -1,0 +1,16 @@
+{% extends "base_posible.html" %}
+{%block title %} Aaaa you didn't say the magic word. {% endblock %}
+{% block header %}
+{% include "thank_header.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="404Content">
+  <div class="grid-x grid-padding-x info404">
+    <div class="cell small-12 medium-12 large-12">
+      <p class="bigTEXT">404</p>
+      <h1>Lo sentimos, el contenido que estas buscando no existe</h1><br/><a href="http://posible.org.mx/registro" class="button warning"><strong>Regresar</strong></a><br/><br/>
+    </div>
+  </div>
+</div>
+{% endblock %}

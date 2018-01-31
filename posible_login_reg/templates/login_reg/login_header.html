@@ -1,0 +1,29 @@
+{% load static %}
+<div style="width:100%;z-index:1000" class="grid-container">
+  <div data-sticky-container="" class="top-bar-container">
+    <div data-sticky="data-sticky" data-options="anchor: page; marginTop: 0; stickyOn: small;" class="sticky sticky-topbar">
+      <div class="top-bar posibleBar">
+        <div id="scrollMenuLogo" class="top-bar-title"><a href="#"><img src="{% static 'img/logo/logo_negro.png'%}" alt="POSiBLE"/></a></div>
+        <div class="top-bar-left hide-for-small-only">
+          <ul data-dropdown-menu="data-dropdown-menu" data-options="disableHover:true;clickOpen:true" class="posibleTABS dropdown menu">
+            <li class="togInfo iniMenu"><a href="#" id="ini">INICIO</a></li>
+            <li class="togInfo convoMenu"><a href="#" id="convo">CONVOCATORIA 2018</a></li>
+            <li class="togInfo noticiasPosible"><a id="ini"href="https://noticias.posible.org.mx" target="_blank" id="noticias">NOTICIAS POSIBLE</a></li>
+          </ul>
+        </div>
+        <div class="top-bar-right lr_container">
+          <div class="grid-x align-right">
+            <div class="cell small-12">   
+              <nav class="posibleLogReg">
+                <ul class="menu">
+                  <li class="lr_menu"><a href="#" id="reg">Registro</a></li>
+                  <li class="lr_menu"><a href="#" id="login">Iniciar Sesión</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

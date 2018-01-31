@@ -1,0 +1,21 @@
+<div id="popup_REV{{p.idn}}" class="overlay_popup">
+  <div class="area_popup popChico">
+    <div class="grid-x grid-padding-y">                     
+      <div class="cell small-12 medium-12 large-12">
+        <h3>Confirmación</h3><a href="#" class="close">×</a>
+      </div>
+      <div class="cell small-12 medium-12 large-12">
+        <div class="cont_popup">
+          <p>Estás apunto de enviar el proyecto <strong>{{p.name}}</strong> a revisión con un evaluador</p>
+          <ul>
+          	<li>Después de enviar tu proyecto <strong>ya no podrás editarlo</strong> </li>
+            <li>Los campos de tu perfil <strong>tampoco se podrá editar</strong> (excepto foto, correo alternativo y teléfono 2)</li>
+            <li>Ahora podrás <strong>bajar el PDF</strong> de tu proyecto</li>
+            <li>Tu proyecto pasará a estado <strong>en revisión</strong> y te daremos tus resultados a partir de la última semana de <strong>mayo</strong></li>
+          </ul>
+        </div>
+      </div>
+      <div class="cell small-12 medium-12 large-12 popupButtons"><a id="enviarproyec" href="{{ request.scheme }}://{{ request.get_host }}/principal/proyecto/{{p.idn}}/revision/" class="button success"><strong>Enviar</strong></a><a id="cancelarproy" href="" class="button alert"><strong>Cancelar</strong></a></div>
+    </div>
+  </div>
+</div>

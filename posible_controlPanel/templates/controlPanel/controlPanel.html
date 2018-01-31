@@ -1,0 +1,65 @@
+{% extends "base_posible.html"  %}
+{%block title %}Bienvenido a tu panel de control {% endblock %}
+
+{%load static %}
+{% block content %}
+ <!--MAIN CONTENT-->
+<div class="hack hide">
+	{% if ver_video %}
+		<a id="introVidFT" href="https://vimeo.com/151132466" class="play--btn popup-vimeo"></a>
+	{% endif %}
+	{%if info_box %}
+		<a id="infoExitosa" href="#popUPRevExitosa">revisiónExitosa</a>
+	{%endif%}
+</div>
+<div class="controlPanelContent">
+  <div class="grid-x grid-margin-x">
+    <div class="cell small-12 medium-12 headLineNews">
+      <div class="grid-x grid-padding-x textAreaNews">
+        <div class="cell small-12 medium-8 large-8 greetingUser">
+          <h3>¡Hola {{user.nombre}}! ¡Bienvenido a tu plataforma!</h3>
+          <h6>En esta pantalla podrás encontrar toda la información de la convocatoria, las fechas relevantes y crear modelos de negocio sobre tus ideas.</h6>
+          <br/>
+        </div>
+        <div class="cell small-12 medium-4 large 4 seasonMessages">
+			<div class="newsArea">
+				<div class="grid-x">
+                    <div class="cell small-12 medium-12 large-12"><a href="#"><img src="https://cdn.posible.org.mx/images/info/banner_intro.png"></a></div>
+				</div>
+			</div>
+        </div>
+      </div>
+    </div>
+    <div class="cell small-12 medium-12 fondo">
+      <div class="grid-x grid-padding-x grid-padding-y">
+        <div class="cell small-12 medium-4">
+			{% include "controlPanel/controlPanel_profileSection.html" %}
+        </div>
+        <div class="cell small-12 medium-8">
+			{% if lista_p %}
+				{% include "controlPanel/controlPanel_projectSection.html" %}
+			{% else %}
+				<a href="./nuevoProyecto"> <img src="{% static 'img/mockup_NO_PROJECT.png' %}" style="padding-top: 5%;"/></a>
+			{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%include 'controlPanel/popUP_changepassword.html'%}
+{%include 'controlPanel/popUP_infoRevisionExito.html'%}
+{%if not tiene_encuesta %}
+	{%include 'controlPanel/popUP_encuesta.html'%}
+{% endif %}
+
+{% for p in lista_p %}
+	{%if p.type == 'project' %}
+		{%if p.avance == 100 and pAvance == 100 %}
+			{%include 'controlPanel/popUP_revision.html'%}
+		{%else%}
+			{%include 'controlPanel/popUP_revision_notComplete.html'%}
+		{% endif %}
+	{% endif %}
+{%endfor%}
+
+{% endblock %}

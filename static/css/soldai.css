@@ -1,0 +1,207 @@
+/** Styles for SoldAI Chat Widget **/
+
+.hermes-container {
+  font-size: 13px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-decoration: none;
+  padding: 0px;
+  width: 280px;
+  box-sizing: border-box;
+  position: fixed;
+  z-index: 600;
+  bottom: 0px;
+  right: 50%;
+  margin-right: -140px;
+  margin-bottom: 0;
+  transition: margin-bottom 0.5s;
+}
+@media  screen and (min-width: 768px) {
+  .hermes-container {
+    right: 20px;
+    margin-right: 0px;
+  }
+}
+.hermes-container.hide {
+  display: none;
+}
+.hermes-container.minimize {
+  margin-bottom: -15px;
+}
+.hermes-container.minimize .hermes-body {
+  display: none;
+}
+.hermes-container.minimize:hover {
+  margin-bottom: 0;
+}
+.hermes-container.minimize .mini-btn:after {
+  bottom: 60%;
+}
+
+.hermes-header {
+  background-color: #000000;
+  border: 1px solid #000000;
+  padding: 8px 5px 5px 5px;
+  box-sizing: content-box;
+  overflow: hidden;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.hermes-header .hermes-title {
+  font-weight: bold;
+  font-size: 13px;
+  color: #FFFFFF;
+}
+.hermes-header .credits {
+  text-align: center;
+  font-size: 9px;
+  margin-top: 3px;
+  display: none;
+  width: 100%;
+}
+@media  screen and (min-width: 480px) {
+  .hermes-header .credits {
+    display: block;
+  }
+}
+.hermes-header .credits a {
+  text-decoration: none;
+  color: #FFFFFF;
+  opacity: 0.6;
+}
+.hermes-header .credits a:hover {
+  color: #FFFFFF;
+  opacity: 1;
+}
+.hermes-header .close-btn {
+  position: relative;
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  overflow: hidden;
+  float: right;
+  cursor: pointer;
+}
+.hermes-header .close-btn:hover:before, .hermes-header .close-btn:hover:after {
+  background-color: #333333;
+}
+.hermes-header .close-btn:before, .hermes-header .close-btn:after {
+  content: '';
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  top: 50%;
+  left: 0;
+  margin-top: -1px;
+  background: #FFFFFF;
+  border-radius: 1px;
+}
+.hermes-header .close-btn:before {
+  transform: rotate(45deg);
+}
+.hermes-header .close-btn:after {
+  transform: rotate(-45deg);
+}
+.hermes-header .mini-btn {
+  position: relative;
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  overflow: hidden;
+  float: right;
+  cursor: pointer;
+  margin-right: 5px;
+}
+.hermes-header .mini-btn:after {
+  content: '';
+  position: absolute;
+  height: 2px;
+  width: 80%;
+  bottom: 10%;
+  left: 0;
+  margin-top: -1px;
+  background: #FFFFFF;
+  border-radius: 1px;
+}
+.hermes-header .mini-btn:hover:after {
+  background-color: #333333;
+}
+.hermes-header .credits {
+  clear: both;
+  float: right;
+}
+.hermes-body {
+  border: 1px solid #000000;
+  width: 100%;
+  box-sizing: border-box;
+}
+.hermes-body .hermes-text {
+  background-color: #EDEEF1;
+  padding: 5px;
+  border: 1px solid #C6C6C6;
+  border-top: none;
+  width: 100%;
+  height: 150px;
+  color: #000;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  display: inline-block;
+  vertical-align: bottom;
+  box-sizing: border-box;
+}
+@media  screen and (min-width: 480px) {
+  .hermes-body .hermes-text {
+    height: 300px;
+  }
+}
+.hermes-body .messages {
+  width: 83.3333%;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  display: inline-block;
+}
+.hermes-body .messages.hermes {
+  background-color: rgba(255, 255, 255, 0.6);
+  text-align: left;
+  float: left;
+}
+.hermes-body .messages.user {
+  background-color: rgba(50, 146, 208, 0.5);
+  text-align: right;
+  float: right;
+}
+.hermes-body .hermes-input-wrapper {
+  border: 1px solid #C6C6C6;
+  border-top: none;
+  background-color: #FFF;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  height: 31px;
+}
+.hermes-body .hermes-input {
+  box-sizing: border-box;
+  padding: 8px 5px;
+  resize: none;
+  width: 100%;
+  border: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+}
+.hermes-body .hermes-input:focus {
+  outline: 0;
+}
+.hermes-body .start-btn {
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  width: 25px;
+  height: 25px;
+  float: right;
+  overflow: hidden;
+}
+.hermes-body .start-img {
+  width: 35px;
+  margin-top: -5px;
+  margin-left: -5px;
+}

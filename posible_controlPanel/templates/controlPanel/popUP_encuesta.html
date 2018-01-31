@@ -1,0 +1,30 @@
+<div id="popupEncuesta" class="overlay_popup">
+  <div class="area_popup popMediano">
+    <div class="grid-x grid-padding-y">                     
+      <div class="cell small-12 medium-12 large-12">
+        <h3>Encuesta de Satisfacción</h3>
+      </div>
+      <div class="cell small-12 medium-12 large-12 popupButtons">
+         <p>* Donde aplique los números de la escala corresponden a lo siguientes valores:</p>
+         <p><strong>(1)</strong> Totalmente en desacuerdo 
+         <strong>(2)</strong> En desacuerdo 
+         <strong>(3)</strong> Neutral 
+         <strong>(4)</strong> De acuerdo 
+         <strong>(5)</strong> Completamente de acuerdo </p>
+      </div>     
+      <div class="cell small-12 medium-12 large-12">
+        <div class="cont_popup_encuesta">
+
+          <form method="POST" action="./encuesta/" >
+			  {% csrf_token %}
+              {{form_encuesta}}
+              <br/>
+              <div class="popupButtons bolding">
+	          	<input type="submit" value="Enviar encuesta" class="button warning"/>
+	          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

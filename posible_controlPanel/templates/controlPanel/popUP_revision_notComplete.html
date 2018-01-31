@@ -1,0 +1,26 @@
+<div id="popup_REV{{p.idn}}" class="overlay_popup">
+  <div class="area_popup popChico">
+    <div class="grid-x grid-padding-y">                     
+      <div class="cell small-12 medium-12 large-12">
+        <h3>Aviso</h3><a href="#" class="close">×</a>
+      </div>
+      <div class="cell small-12 medium-12 large-12">
+        <div class="cont_popup">
+          <p>El proyecto: <strong>{{p.name}}</strong> no puede ser enviado a revisión </p>
+          {% if p.mod_faltan %}
+	          <p>Debido a que tiene un avance del {{p.avance}}%, por favor verifica los siguientes módulos: </p>
+	          <ul>
+	          	{% for mf in p.mod_faltan %}
+	          		<li>{{mf.value}}</li>	
+	          	{%endfor%}
+	          </ul>
+	       {% endif %}
+	       {%if  pAvance != 100 %}
+	       		<p>Es <strong>obligatorio</strong> tener el perfil al 100% para continuar</p>
+	       {% endif %}
+        </div>
+      </div>
+      <div class="cell small-12 medium-12 large-12 popupButtons"><a id="cerrar" href="#" class="button warning"><strong>Cerrar</strong></a></div>
+    </div>
+  </div>
+</div>

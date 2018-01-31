@@ -1,0 +1,57 @@
+{% load static %}
+<div class="grid-x">
+	<div class="cell small-12 medium-12 large-12">
+		<h5>Te recomendamos ver estos videos:</h5>
+	</div>
+  <div class="cell small-12 medium-12 large-12">
+  {% for m in module_a %}
+		{% if m.type_content == 'video' %}
+		    <div id ="introduc_div">
+		    	<div id="embedIntro_div">
+		    	Cargando video...
+		    	<input id="vidInt" type="hidden" value={{m.texto}}/>
+		    	</div>
+		    </div>
+		    <div id="minic_div" class="hide">
+		    	<div id="embedMini_div">
+		    	Cargando video...
+		    	<input id="vidMini" type="hidden" value={{m.url}}/>
+		    	</div>
+		    </div>
+		{%endif%}
+	{%endfor%}
+  </div>
+  <div class="cell small-12 medium-12 large-12">
+    <div class="centerIT">
+      <button id="introduc_vid" class="hollow button">Introducción</button>
+      <button id="mini_class" class="hollow button">Mini Clase</button>
+    </div>
+  </div>
+  <div class="cell small-12 medium-12 large-12">
+    <h5>Artículos</h5>
+  </div>
+  {% for m in module_a %}
+  	{% if m.type_content == 'vinculo' %}
+  		<div class="cell small-12 medium-12 large-12">
+  			<a href="{{m.url}}" target="_blank" class="button helpConcepts">
+      			<p class="data"> <img src="{% static 'img/icons/file.png' %}" class="libro"/> {{m.title}} </p>
+      		</a>
+      	</div>
+    {% endif %}
+  {% endfor %}
+    <h5>Glosario</h5>
+	  <div class="cell small-12 medium-12 large-12">
+	  	<ul data-accordion="" data-multi-expand="true" data-allow-all-closed="true" class="accordion">
+	  		{% for m in module_a %}
+	  			{% if m.type_content == 'glosario' %}
+		  		<li data-accordion-item="" class="accordion-item">
+	       			<a href="#" class="accordion-title helpGlosario">{{m.title}} </a>
+			        <div data-tab-content="" class="accordion-content">
+			          <p>{{m.texto}}</p>
+			        </div>
+			     </li>
+	      		{% endif %}
+	  		{% endfor %}
+	  	</ul>
+	  </div>
+</div>

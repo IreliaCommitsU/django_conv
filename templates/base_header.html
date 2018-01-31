@@ -1,0 +1,37 @@
+{% load static %}
+<div style="width:100%;z-index:1000" class="grid-container">
+  <div data-sticky-container="" class="top-bar-container">
+    <div data-sticky="data-sticky" data-options="anchor: page; marginTop: 0; stickyOn: small;" class="sticky sticky-topbar">
+      <div class="top-bar posibleBar">
+        <div id="scrollMenuLogo" class="top-bar-title"><a href="#"><img src="{% static 'img/logo/logo_negro.png' %}" alt="POSiBLE"/></a></div>
+        <div class="top-bar-left">
+          <ul data-dropdown-menu="data-dropdown-menu" data-options="disableHover:true;clickOpen:true" class="posibleTABS dropdown menu">
+            <li class="togInfo genView"><a href="{{ request.scheme }}://{{ request.get_host }}/principal" id="visGen">Vista general de la cuenta</a></li>
+            <li class="togInfo profileEd"><a href="{{ request.scheme }}://{{ request.get_host }}/principal/perfil/" id="edPerfil">{%if ya_envio%}Ver{%else%}Editar{%endif%} perfil</a></li>
+            <li class="togInfo createProj"><a href="{{ request.scheme }}://{{ request.get_host }}/principal/nuevoProyecto/" id="newProy">Crear proyecto</a></li>
+            <li id="posNews" class="togInfo posibleNews"><a href="https://noticias.posible.org.mx" target="_blank" id="noticias">Noticias</a></li>
+          </ul>
+        </div>
+        <div class="top-bar-right lr_container">
+          <div class="grid-x align-right">
+            <div class="cell small-12">   
+              <nav class="posibleLogReg">
+                <ul data-dropdown-menu="data-dropdown-menu" data-options="disableHover:true;clickOpen:true" class="dropdown menu">
+                  <li class="lr_menu"><a class="no-active-lnk"></a></li>
+                  <li class="lr_menu"><a href="#" style="padding:0;" id="opMenuC"><img src="{%if user.foto %}{{user.foto.url}}{% else %} {% static 'img/no_photo.png' %} {%endif%}" width="40px" height="40px" class="profilePic"/><strong>Opciones de Cuenta</strong></a>
+                    <ul class="menu">
+                      <li class="acc_man"> <a href="#popupPASS" id="opPsw">Cambiar Contraseña     </a></li>
+                      <li class="acc_man"><a href="{{ request.scheme }}://{{ request.get_host }}/logout/" id="opCS">Cerrar Sesión</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

@@ -1,0 +1,45 @@
+{% extends "base_posible.html"  %}
+{% load static %}
+{%block title %} Próximamente POSiBLE 2018 {% endblock %}
+{%block script_ty %}
+<!-- Facebook Pixel Code -->
+<!--  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1691200764496972');
+  fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"  src="https://www.facebook.com/tr?id=1691200764496972&ev=PageView&noscript=1"/></noscript>
+<!-- End Facebook Pixel Code 
+<script>
+  fbq('track', 'CompleteRegistration');
+</script>-->
+{% endblock %}
+{% block header %}
+	{% include 'thank_header.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="thankyouContent" style="background-image: url('{%static 'img/posible.st.png' %}')">
+  <div class="grid-x grid-padding-x infoThanyou">
+    <div class="cell small-12 medium-12 large-12">
+      <h2>¡Gracias por registrarte!</h2>
+    </div>
+    <div class="cell small-12 medium-12 large-12"><br/>
+      <h4>Recuerda que tienes del <strong>2 de febrero al 27 </strong> de abril para completar y enviar tu idea de negocio. </h4>
+      <h4>¡Aporta eso que solo tú puedes dar!</h4>
+      <h6>
+        Te invitamos a seguir el sitio de noticias de POSiBLE, dónde podrás encontrar las notas más interesantes del ecosistema de emprendimiento, fechas para otras convocatorias, podrás conocer a la comunidad de POSiBLers de estos 5 años anteriores y ¡mucho más!
+      </h6><br/><a href="https://noticias.posible.org.mx" target="_blank" class="button warning"><strong>Accede a las noticias</strong></a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
