@@ -210,7 +210,7 @@ def forgot_PSW(request):
             code2 = randomPSWcode()
             us.codigo_seguridad = code
             message = get_template('forgot_template.html').render({'name':us.nombre,'url':'https://posible.org.mx/cambiarClave/?ref=%s&email=%s' % (code+code2 ,us.email)})
-            us.email_user('Posible - Contraseña Olvidada',message, 'hola@posible.org.mx')
+            #us.email_user('Posible - Contraseña Olvidada',message, 'hola@posible.org.mx')
             us.save()
             return redirect('/login/?good=1')
         except Usuarios.DoesNotExist:

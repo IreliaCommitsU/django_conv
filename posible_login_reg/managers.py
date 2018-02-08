@@ -35,7 +35,7 @@ class UsuarioManager(BaseUserManager):
         message = get_template('welcome_template.html').render({'name':nombre,'url':'https://posible.org.mx/cambiarClave/?ref=%s&email=%s' % (code+code2 ,email)})
         user.set_password(password)
         user.save(using=self._db)
-        user.email_user('Posible - Bienvenido',message, 'hola@posible.org.mx',)
+        #user.email_user('Posible - Bienvenido',message, 'hola@posible.org.mx',)
         return user
     
     def create_user(self,email,nombre='sin_nombre',**extra_fields):

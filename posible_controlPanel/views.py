@@ -322,7 +322,7 @@ def send_revision(request,proyID):
             loadP.status = 'revision'
             loadP.save()
             message = get_template('controlPanel/folio_template.html').render({'name':us.nombre,'folio':now ,'id':loadP.id})
-            us.email_user('Posible - Envio proyecto exitoso',message, 'hola@posible.org.mx')
+            #us.email_user('Posible - Envio proyecto exitoso',message, 'hola@posible.org.mx')
             return redirect('/principal/?p=%s' % result )
     return redirect('/principal/?p=%s' % result )
 
