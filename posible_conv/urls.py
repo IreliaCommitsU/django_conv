@@ -15,8 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from posible_login_reg.views import landing,log_in,register,log_out,\
-    change_PS_page, forgot_PSW, aviso
+from posible_login_reg.views import landing,log_out,\
+    change_PS_page, forgot_PSW, aviso, log_in_class, register_class
 from posible_controlPanel.views import control_panel, profileEditor, \
     changePSW, pdf_generation,projectCreator, projectEditor,send_revision,\
     encuesta_send
@@ -29,19 +29,23 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     
     #LANDING PAGE BEFORE STARTING
-    url(r'^$', register),
+    url(r'^$', register_class.as_view()),
     #PRIVACY NOTICE FACEBOOK COMPLIANCE
     url(r'^aviso_privacidad/$',aviso),
     #LOGIN URLS
-    url(r'^login/$', log_in),
+    url(r'^login/$', log_in_class.as_view()),
     url(r'^logout/$', log_out),
+    
+    #VERTICAL SINALOA
+    url(r'^sinaloa/$', register_class.as_view(template_name='login_reg/sinaloaLR.html')),
+    
     url(r'^login/forgotPSW/$', forgot_PSW),
     url('', include('social_django.urls', namespace='social')),
     #THANKYOU
     url(r'^thanks/$', landing),
-    
+
     #REGISTER URLS
-    url(r'^registro/$',register),
+    url(r'^registro/$',register_class.as_view()),
     url(r'^cambiarClave/$',change_PS_page),
     #url(r'^dashboard/$',register),
     
@@ -53,7 +57,7 @@ urlpatterns = [
     url(r'^principal/proyecto/(\d{1,6})/pdf/',pdf_generation),
     url(r'^principal/cambiar/', changePSW),
     url(r'^principal/encuesta/', encuesta_send ),
-    #url(r'^google9994b74c9bd93b22\.html$', lambda r: HttpResponse("google-site-verification: google9994b74c9bd93b22.html"))
+    url(r'^google9994b74c9bd93b22\.html$', lambda r: HttpResponse("google-site-verification: google9994b74c9bd93b22.html"))
 ]
 #BEWARE THIS ONLY IS FOR DEVELOPMENT LOOK FOR CDN IMPLEMENTATION FOR SERVER
 if settings.DEBUG:

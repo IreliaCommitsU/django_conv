@@ -13,13 +13,14 @@ from django.contrib.auth import logout
 from base64 import b64decode
 import bcrypt
 from _io import BytesIO
+from django.template.loader import get_template
 
 # Create your views here.
 @login_required(login_url='/login/')
 def control_panel(request):
     #timezone lock
     #nau = timezone.now()
-    #if nau.month ==1 or (nau.month==2 and nau.day<2):
+    #if request.user.email!='hugo.huipet@gmail.com':
     #    logout(request)
     #    return redirect('/thanks/')
     res = request.GET.get('p','0')
@@ -32,13 +33,14 @@ def control_panel(request):
         est = None
     vid = request.user.porcentaje_perfil == None
     if vid:
-        request.user.porcentaje_perfil = 0
-        request.user.save() 
-    pUser = Proyectos.objects.filter(uuid_usuario=us.uuid)
+        return redirect('/principal/perfil/')
+        #request.user.porcentaje_perfil = 0
+        #request.user.save() 
+    pUser = Proyectos.objects.filter(email=us.email)
     cPro = pUser.count()
     lista_p = []
     progreso_usr = round(progressCalculator(us))
-    has_encuesta = Encuesta.objects.filter(uuid=us.uuid).count() > 0 # False "no ha llenado encuesta" True "ya llenó encuesta"
+    has_encuesta = Encuesta.objects.filter(email=us.email).count() > 0 # False "no ha llenado encuesta" True "ya llenó encuesta"
     ya_envio = False
     for ps in pUser:
         if ps.status != 'borrador':
@@ -66,13 +68,17 @@ def control_panel(request):
                                                             'tiene_encuesta':has_encuesta,
                                                             'ya_envio':ya_envio,
                                                             'info_box':res,
-                                                            'ver_video':vid,
+                                                            
                                                             })
 
 @login_required(login_url='/login/')
 def profileEditor(request):
+    vid = request.user.porcentaje_perfil == None
+    if vid:
+        request.user.porcentaje_perfil = 0
+        request.user.save() 
     VERTICALES_ID = {2:'1', 20:'2',25:'3'} #1 bc 2 oax 3 sinaloa 0 ninguno
-    pUser = Proyectos.objects.filter(uuid_usuario=request.user.uuid) 
+    pUser = Proyectos.objects.filter(email=request.user.email) 
     
     ya_envio = False
     has_soc = request.user.socios != None and request.user.socios!=""  
@@ -83,8 +89,7 @@ def profileEditor(request):
     if request.method == 'POST':
         image_data = None
         imgBase64 = request.POST.get('dtaImg','')
-
-            
+        pressed_btn = request.POST.get('s_prof','')
         if not ya_envio:
             form = ProfileForm(data=request.POST,files= request.FILES ,instance=request.user)
         else:
@@ -95,11 +100,23 @@ def profileEditor(request):
             if imgBase64.strip() != "":
                 _, imgstr = imgBase64.split(';base64,')
                 image_data = b64decode(imgstr)
-                usu.foto = ContentFile(image_data, str(usu.uuid)+'.png')
+                usu.foto = ContentFile(image_data, str(usu.id)+'.png')
             usu.user = request.user
             usu.save()
-            
-            return redirect('/principal/')
+            if pressed_btn == "1":
+                return redirect('/principal/')
+            else:
+                if not ya_envio:
+                    form = ProfileForm(data=request.POST,files= request.FILES ,instance=request.user)
+                else:
+                    form = ProfileClosed(data=request.POST,files= request.FILES ,instance=request.user)
+                vert = VERTICALES_ID.get(form.instance.id_estado)
+                return render(request, 'controlPanel/profile.html', {'form': form,
+                                                                 'vert':vert,
+                                                                 'img_photo':request.user.foto.url,
+                                                                 'has_sh': has_soc,
+                                                                 'ya_envio':ya_envio,
+                                                                })
         else:
             return render(request, 'controlPanel/profile.html', {'form': form,
                                                                  'vert':vert,
@@ -118,13 +135,13 @@ def profileEditor(request):
                                                              'img_photo':request.user.foto.url,
                                                              'has_sh': has_soc,
                                                              'ya_envio':ya_envio,
+                                                             'ver_video':vid,
                                                              })
     
 @login_required(login_url='/login/')
 def projectCreator(request):
     us = request.user
-    pUser = Proyectos.objects.filter(uuid_usuario=us.uuid).count()
-
+    pUser = Proyectos.objects.filter(email=us.email).count()
     if pUser == 3:
         return redirect('/principal/') #CHECK VALIDATION FOR USER PROJECTS (NO MORE THAN 3) (MAYBE ADD MESSAGE)
     
@@ -137,6 +154,7 @@ def projectCreator(request):
             now = timezone.now()
             pInstance = form.save(commit=False)
             pInstance.uuid_usuario = request.user.uuid
+            pInstance.email = request.user.email
             pInstance.status = 'borrador'
             pInstance.privado = 0
             pInstance.fecha_creacion = now
@@ -198,7 +216,7 @@ def projectEditor(request, proyID, page):
     }
     #DOUBLE CHECK THAT THE PROY.USER.ID REALLY BELONGS TO USER.ID IF NOT 404()
     us = request.user
-    loadP = is_mine(us.uuid,proyID)
+    loadP = is_mine(us.email,proyID)
     if not loadP: #PROJECT ID DOES NOT BELONG TO USER OR (PROY ID SIMPLY DOESN'T EXIST)
         raise Http404
     #IF PROJECT ALREADY 'ON REVISION' CAN'T ENTER HERE
@@ -289,7 +307,7 @@ def send_revision(request,proyID):
     if request.method != 'POST':
         proyID = int(proyID)
         us = request.user
-        loadP = is_mine(us.uuid,proyID)
+        loadP = is_mine(us.email,proyID)
         if not loadP: #PROJECT ID DOES NOT BELONG TO USER OR (PROY ID SIMPLY DOESN'T EXIST)
             raise Http404
         if loadP.status != 'borrador':
@@ -303,6 +321,8 @@ def send_revision(request,proyID):
             loadP.fecha_envio_a_revision = now
             loadP.status = 'revision'
             loadP.save()
+            message = get_template('controlPanel/folio_template.html').render({'name':us.nombre,'folio':now ,'id':loadP.id})
+            us.email_user('Posible - Envio proyecto exitoso',message, 'hola@posible.org.mx')
             return redirect('/principal/?p=%s' % result )
     return redirect('/principal/?p=%s' % result )
 
@@ -310,7 +330,7 @@ def send_revision(request,proyID):
 def pdf_generation(request,proyID):
     proyID = int(proyID)
     us = request.user
-    loadP = is_mine(us.uuid,proyID)
+    loadP = is_mine(us.email,proyID)
     if not loadP: #PROJECT ID DOES NOT BELONG TO USER OR (PROY ID SIMPLY DOESN'T EXIST)
         raise Http404 
     if loadP.status == 'borrador': #CAN'T PRINT PDFS OF INCOMPLETE PROJECTS
@@ -334,10 +354,10 @@ def changePSW(request):
         if bcrypt.checkpw(current.encode('utf8'), us.password.encode('utf8')):
             us.set_password(new)
             us.save()
-            result = 1 #TODO PASSWORD CHANGE
+            result = 'yes' #TODO PASSWORD CHANGE
         else: # Current password is not correct
-            result = 2 #TODO PASSWORD NOT CHANGE
-    return redirect('/principal/?p=%s' % result)
+            result = 'no' #TODO PASSWORD NOT CHANGE
+    return redirect('/login/?pcd=%s' % result)
 
 @login_required(login_url='/login/')
 def encuesta_send(request):
@@ -346,6 +366,7 @@ def encuesta_send(request):
         if form.is_valid():
             eInstance = form.save(commit=False)
             eInstance.uuid = request.user.uuid 
+            eInstance.email = request.user.email
             eInstance.save()
         return redirect('/principal/')
 

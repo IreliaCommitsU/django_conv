@@ -287,7 +287,7 @@ function initDatePickers(){
 }
 function trigger_ck(name_control){
   if($("#"+name_control).length)
-    $("#"+name_control).click();
+    $("#"+name_control)[0].click();
 }
 function verticalsTrigger(){
   if($( "#id_id_estado" ).length){
@@ -383,11 +383,13 @@ function pageSwapper(){
       switch (ev.target.id) {
         case "ini":
           excepto = "Inicio";
-          $(".infoPosible").css('background-image','url(/static/img/posible.st.png)')
+          $(".infoPosible").css('background-image','url(/static/img/posible.final.png)');
+          $(".infoSinaloa").css('background-image','url(https://cdn.posible.org.mx/images/vert/sinaloa.png)');
         break;
         case "convo":
           excepto = "Convocatoria";
-          $(".infoPosible").css('background-image','url(/static/img/infografias2.png)')
+          $(".infoPosible").css('background-image','url(https://cdn.posible.org.mx/images/vert/info_nacional2v2.png)')
+          $(".infoSinaloa").css({'background-image':'url(https://cdn.posible.org.mx/images/vert/info_sinaloa.png)','background-size': '100% 100%'})
         break;
         case "vExp":
           excepto = "vCual";

@@ -3,10 +3,11 @@ from reportlab.lib.enums import TA_JUSTIFY
 from reportlab.lib.pagesizes import letter, A4
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Image
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from posible_controlPanel.labels import LABELS_QUESTIONS
+from posible_controlPanel.labels import LABELS_QUESTIONS, LABELS_QUESTIONS_PDF
 from posible_controlPanel.choices import *
 from posible_controlPanel.helpers import jsonify
 from django.conf import settings
+
 
 class PdfPrint():
     def __init__(self, buffer, pageSize):
@@ -54,6 +55,7 @@ class PdfPrint():
         # set some characteristics for pdf document
         doc = SimpleDocTemplate(
             self.buffer,
+            title=folio,
             rightMargin=72,
             leftMargin=72,
             topMargin=30,
@@ -68,7 +70,8 @@ class PdfPrint():
         data.append(Paragraph(title, styles['Title']))
         data.append(Paragraph(content.modulo_2_1, styles['Title']))
         data.append(Paragraph('Folio: ' + folio, styles['Title']))
-        for l in LABELS_QUESTIONS:
+        
+        for l in LABELS_QUESTIONS_PDF:
             if 'MODULE' in l:
                 data.append(Paragraph(str(LABELS_QUESTIONS.get(l)),styles['Heading2']))
             elif 'modulo_' in l: #AT THIS POINT ANY LABEL WITH EMPTY VALUE WAS A QUESTION THAT SHOULD NOT APPEAR

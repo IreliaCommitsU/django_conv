@@ -5,9 +5,9 @@ import json
 def jsonify(data):
     return json.loads(data.replace("u'","'").replace("'",'"'))
 
-def is_mine(us_id, id_project):
+def is_mine(us_e, id_project):
     p_proy = None
-    pUser = Proyectos.objects.filter(uuid_usuario=us_id) 
+    pUser = Proyectos.objects.filter(email=us_e) 
     for ps in pUser:
         if ps.id == id_project:
             p_proy = ps
@@ -127,6 +127,7 @@ def progressCalculator(project,module=1):
                             ['tel_1',True],
                             ['tel_2_lada',True],
                             ['tel_2',True],
+                            ['area_experiencia',True],
                             ['como_te_enteraste',True],
                             ['socios',False], 
                           ]

@@ -1,6 +1,6 @@
 from django import forms
 
-from posible_login_reg.models import Usuarios
+from posible_login_reg.models import Usuarios, CodigosPostales
 from posible_controlPanel.models import Proyectos, Encuesta
 from django.utils.translation import gettext_lazy as _
 from posible_controlPanel.custom_widgets import NonClearableImageInput, SociosMultiWidget
@@ -13,7 +13,7 @@ WORDS_30_MESSAGE = '* Máximo 30 palabras.'
 
 
 class ProfileForm(forms.ModelForm):
-    id_estado = forms.ChoiceField(required = False,choices = PS_STATES)
+    id_estado = forms.ChoiceField(required = True,choices = PS_STATES)
     nacimiento = forms.DateField(required = False,
                                 widget=forms.TextInput(attrs={'class':'datepicker'}),
                                  label = 'Fecha de Nacimiento')
@@ -28,16 +28,19 @@ class ProfileForm(forms.ModelForm):
     email = forms.CharField(disabled = True, 
                             widget=forms.TextInput(),
                             )
-    tel_1_lada = forms.CharField(required = False,label='',  max_length=2,
+    municipio = forms.ModelChoiceField(required= False, queryset=None,
+                                       empty_label="")
+    tel_1_lada = forms.CharField(required = False,label='',  max_length=4,
                     widget=forms.TextInput(attrs={'placeholder': 'LADA'}))
-    tel_2_lada = forms.CharField(required = False,label='', max_length=2,
+    tel_2_lada = forms.CharField(required = False,label='', max_length=4,
                     widget=forms.TextInput(attrs={'placeholder': 'LADA'}))
     tel_1= forms.CharField(required = False,label='',  max_length=12,
                     widget=forms.TextInput())
     tel_2 = forms.CharField(required = False,label='', max_length=12,
                     widget=forms.TextInput())
-    area_experiencia = forms.CharField(required=False,
-                                       widget=forms.TextInput())
+    area_experiencia = forms.CharField(required=False, max_length=140,
+                                       widget=forms.TextInput(attrs={'placeholder': '140 caracteres máximo'})
+                                       )
     socios = forms.CharField(required=False,widget = SociosMultiWidget(attrs={'class': 'size_inputs'}))
     class Meta:
         model = Usuarios
@@ -76,6 +79,7 @@ class ProfileForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(ProfileForm,self).__init__(*args, **kwargs)
+        self.fields['municipio'].queryset = CodigosPostales.objects.filter(id_estado=self.instance.id_estado).order_by('municipio').values_list('municipio',flat=True).distinct()
         if self.instance:
             obj_data = self.instance.__dict__
             if obj_data.get('_wrapped') and obj_data['_wrapped'].como_te_enteraste:
@@ -84,6 +88,8 @@ class ProfileForm(forms.ModelForm):
         super(ProfileForm, self).clean() #if necessary
         if 'socios' in self._errors:
             del self._errors['socios']
+        if 'municipio' in self._errors:
+            del self._errors['municipio']
         listSocios = [
             {"nombre":''.join(self.data.getlist('socios_0')),
              "email" :''.join(self.data.getlist('socios_1')),
@@ -106,6 +112,7 @@ class ProfileForm(forms.ModelForm):
         listSocios[2].get('nombre').strip() =='' and listSocios[3].get('nombre').strip() =='':
             listSocios=''
         self.cleaned_data['socios']=str(listSocios)
+        self.cleaned_data['municipio']=str(''.join(self.data.getlist('municipio')))
         return self.cleaned_data 
 
 class PageOne(forms.ModelForm):
@@ -397,7 +404,7 @@ class PageFive(forms.ModelForm):
             'modulo_5_5' : LABELS_QUESTIONS.get('modulo_5_5'),
         }
         help_texts = {
-            'modulo_5_4_otro' : _('Puedes ingresar un valor númerico de hasta 2 decimales.'),
+            'modulo_5_4_otro' : _('Escribe aquí el precio para tu producto o servicio'),
             'modulo_5_5' :_('* Máximo 150 palabras'),
         }
 
@@ -509,10 +516,10 @@ class PageSeven(forms.ModelForm):
 class EncuestaForm(forms.ModelForm):
     pregunta1 =  forms.ChoiceField(widget = forms.RadioSelect,
                                    choices = NUMBERS_CHOICE,
-                                   label = _('1. ¿La explicación de los videos animados te ayudo a contestar las preguntas de los módulos?'),)
+                                   label = _('1. ¿La explicación de los videos animados te ayudó a contestar las preguntas de los módulos?'),)
     pregunta2 =  forms.ChoiceField(widget = forms.RadioSelect,
                                    choices = NUMBERS_CHOICE,
-                                   label = _('2. ¿La explicación de la mini clase (segundo video) de cada modulo te ayudó a conocer más sobre el tema?'),)
+                                   label = _('2. ¿La explicación de la mini clase (segundo video) de cada módulo te ayudó a conocer más sobre el tema?'),)
     
     pregunta3 =  forms.ChoiceField(widget = forms.RadioSelect,
                                    choices = NUMBERS_CHOICE,
@@ -520,7 +527,7 @@ class EncuestaForm(forms.ModelForm):
     
     pregunta4 =  forms.ChoiceField(widget = forms.RadioSelect,
                                    choices = NUMBERS_CHOICE,
-                                   label = _('4. ¿El Modelo de Negocio POSiBLE te ayudó a estructurar tu idea de manera clara y sencilla?'),)
+                                   label = _('4. ¿El modelo de negocio POSiBLE te ayudó a estructurar tu idea de manera clara y sencilla?'),)
     
     pregunta5 =  forms.ChoiceField(widget = forms.RadioSelect,
                                    choices = YES_NO,
@@ -574,6 +581,8 @@ class ProfileClosed(forms.ModelForm):
                                 widget= forms.CheckboxSelectMultiple ,
                                 choices = ENTERASTE,
                                                  )
+    municipio = forms.CharField(disabled = True,
+                            widget=forms.TextInput(),)
     area_experiencia = forms.CharField(disabled = True,required=False,
                                        widget=forms.TextInput())
     socios = forms.CharField(disabled = True,required=False,widget = SociosMultiWidget(attrs={'class': 'size_inputs'}))

@@ -38,8 +38,8 @@
 }
 
 .hermes-header {
-  background-color: #000000;
-  border: 1px solid #000000;
+  background-color: #FED401;
+  border: 1px solid #FED401;
   padding: 8px 5px 5px 5px;
   box-sizing: content-box;
   overflow: hidden;
@@ -65,11 +65,11 @@
 }
 .hermes-header .credits a {
   text-decoration: none;
-  color: #FFFFFF;
+  color: #000000;
   opacity: 0.6;
 }
 .hermes-header .credits a:hover {
-  color: #FFFFFF;
+  color: #000000;
   opacity: 1;
 }
 .hermes-header .close-btn {
@@ -92,7 +92,7 @@
   top: 50%;
   left: 0;
   margin-top: -1px;
-  background: #FFFFFF;
+  background: #000000;
   border-radius: 1px;
 }
 .hermes-header .close-btn:before {
@@ -130,7 +130,7 @@
   float: right;
 }
 .hermes-body {
-  border: 1px solid #000000;
+  border: 1px solid #FED401;
   width: 100%;
   box-sizing: border-box;
 }

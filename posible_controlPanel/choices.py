@@ -86,13 +86,13 @@ IDEA_CATEGORIES = (
 )
 DEV_STAGE =(
     ('idea','Idea'),
-    ('creacion','Proceso de Creación'),
+    ('creacion','Proceso de creación (prototipo)'),
     ('operacion','En operación (Indica la fecha de inicio de operación)'),
 )
 
 DEVELOPMENTS_TECH =(
-    ('pagina_web','Tienes una página Web'),
-    ('app_movil','Tienes una aplicación Móvil'),
+    ('pagina_web','Tienes una página web'),
+    ('app_movil','Tienes una aplicación móvil'),
     ('tansacc_enlinea','Realizas transacciones en línea'),
     ('sw_hw','Tienes software o hardware propio'),
     ('prototipo','Cuentas con algún prototipo funcional'),
@@ -227,7 +227,7 @@ FINANCIAL_SUPPORT = (
     ('capital_semilla','Capital semilla'),
     ('credito_bancario','Crédito bancario'),
     ('prestamos_familiares','Préstamos familiares'),
-    ('otro','Otro ¿cuál?'),
+    ('otro','Otro'),
 )
 
 

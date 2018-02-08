@@ -2,6 +2,11 @@
 {%block title %}Editor de tu Perfil{% endblock %}
 {% load static %}
 {% block content %}
+<div class="hack hide">
+  {% if ver_video %}
+    <a id="introVidFT" href="https://vimeo.com/151132466" class="play--btn popup-vimeo"></a>
+  {% endif %}
+</div>
 <div class="profileContent">
   <div class="grid-x grid-padding-x">
     <div class="cell small-12 medium-12 large-12">
@@ -12,11 +17,17 @@
             <p>Estás participando en una de las “Oportunidades Especiales” de la convocatoria,  
             realizaremos actividades adicionales en tu Estado, como son: capacitaciones y 
             un Campamento Estatal para elegir a los proyectos que formarán parte del Campamento POSiBLE. 
-            Si quieres saber más, ve a la sección de <a href="{%if vert == '3' %}{% static 'docs/Sinaloa_POSiBLE_2018.pdf' %}{%else%}#{% endif%}" target="_blank">"Oportunidades Especiales".</a> </p>
+            <a href="{%if vert == '3' %}
+            											{% static 'docs/Sinaloa_Convocatoria_POSiBLE_2018.pdf' %}
+            											{%elif vert == '2' %}
+            											{% static 'docs/Oaxaca_Convocatoria_POSiBLE_2018.pdf' %}
+            											{%elif vert == '1' %}
+            											{% static 'docs/BC_Convocatoria_POSiBLE_2018.pdf' %}
+            											{%else%}#{% endif%}" target="_blank"><strong>Conoce la convocatoria estatal.</strong></a> </p>
           </div>
     </div>
     <div class="cell small-12 medium-12 large-12">
-      <form method="post" action="../perfil/" enctype="multipart/form-data" style="width:100%;">
+      <form id="profile_f" method="post" action="../perfil/" enctype="multipart/form-data" style="width:100%;">
       {% csrf_token %}
         <div class="grid-x grid-padding-x grid-padding-y">
           <div class="cell small-12 medium-6 large-6">
@@ -53,7 +64,7 @@
             <div class="wrapperTopNew"><a href="#popup_ImgCrop"><img id="res" src="{{img_photo}}"/></a><a href="#popup_ImgCrop"> 
                 <div class="imageTopLabel">
                   <div class="grid-x">
-                    <div class="cell small-9 medium-9 large-9">
+                    <div class="cell small-8 medium-9 large-9">
                       <p>Subir imagen</p>
                     </div>
                     <div class="cell shrink"><i class="fi-camera large"></i></div>
@@ -94,6 +105,10 @@
               </div>
             </div>
           </div>
+          <div class="cell small-12 medium-6 large-6">
+			<label class="modelSubtitles">Tu área de experiencia</label>
+          {{form.area_experiencia}}
+          </div>
           <div class="cell small-12 medium-3 large-3">
             <label class="modelSubtitles">Correo electrónico</label>
             {{form.email}}
@@ -102,10 +117,7 @@
             <label class="modelSubtitles">Correo alternativo</label>
             {{form.email_alt}}
           </div>
-          <div class="cell small-12 medium-6 large-6">
-			<label class="modelSubtitles">Tu área de experiencia</label>
-          {{form.area_experiencia}}
-          </div>
+          
           <div class="cell small-12 medium-6 large-6">
             <div class="grid-x stakeHolders">
               <div class="cell small-12 medium-3 large-3">
@@ -127,7 +139,7 @@
 			{{form.como_te_enteraste}}
           </div>
           <div class="cell small-12 medium-12 large-12 btn_canva_container">
-            <button type="submit" class="button warning"><strong> Guardar perfil</strong></button>
+            <button type="submit" name="s_prof" class="button warning" value="1"><strong> Guardar perfil</strong></button>
           </div>
         </div>
       </form>

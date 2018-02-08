@@ -1,0 +1,111 @@
+{% extends 'admin/change_list.html' %}
+{%load humanize %}
+{% block content_title %}
+    <h1> Resumen de usuarios </h1>
+	<form id="filtersH" method="GET" action=".">
+    <label for="admin_estado">Filtrar por estados: </label>
+	<select name="id_estado" id="admin_estado">
+	  <option value=""></option>
+	  <option value="1">Aguascalientes</option>
+	  <option value="2">Baja California</option>
+	  <option value="3">Baja California Sur</option>
+	  <option value="4">Campeche</option>
+	  <option value="5">Coahuila de Zaragoza</option>
+	  <option value="6">Colima</option>
+	  <option value="7">Chiapas</option>
+	  <option value="8">Chihuahua</option>
+	  <option value="9">Ciudad de México</option>
+	  <option value="10">Durango</option>
+	  <option value="11">Guanajuato</option>
+	  <option value="12">Guerrero</option>
+	  <option value="13">Hidalgo</option>
+	  <option value="14">Jalisco</option>
+	  <option value="15">Estado de México</option>
+	  <option value="16">Michoacán de Ocampo</option>
+	  <option value="17">Morelos</option>
+	  <option value="18">Nayarit</option>
+	  <option value="19">Nuevo León</option>
+	  <option value="20">Oaxaca</option>
+	  <option value="21">Puebla</option>
+	  <option value="22">Querétaro</option>
+	  <option value="23">Quintana Roo</option>
+	  <option value="24">San Luis Potosí</option>
+	  <option value="25">Sinaloa</option>
+	  <option value="26">Sonora</option>
+	  <option value="27">Tabasco</option>
+	  <option value="28">Tamaulipas</option>
+	  <option value="29">Tlaxcala</option>
+	  <option value="30">Veracruz de Ignacio de la Llave</option>
+	  <option value="31">Yucatán</option>
+	  <option value="32">Zacatecas</option>
+	</select>
+	<label for="fec_inf">Fecha inferior: </label><input id="fec_inf" name="fecha_alta__gte" type="text" value="2017-07-05 00:00:00"/>
+	<label for="fec_sup">Fecha superior: </label><input id="fec_sup" name="fecha_alta__lt" type="text" value="2019-01-01 00:00:00"/>
+	<input type="submit" value="Filtrar">
+	</form>
+	<div id="loady" style="display:none;height:50px;width:50px; background-image: url(https://cdn.posible.org.mx/images/logos/loading.gif);background-position:center;background-size: 300% 300%;margin: 0 auto;"></div>
+	
+<hr>
+{% endblock %}
+
+{% block result_list %}
+<br><br>
+<div class="results">
+    <table>
+        
+    <thead>
+      <tr>
+        <th>
+          <div class="text">
+            <a href="#">Usuarios</a>
+          </div>
+        </th>
+        <th>
+          <div class="text">
+            <a href="#">Total</a>
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+       <tr style=”font-weight:bold; border-top:2px solid #DDDDDD;”>
+            <td> Total </td>
+            <td> {{ summary_total.total |intcomma:False}} </td>
+       </tr>
+    </tbody>
+   
+  </table>
+</div>
+<script>
+$ = django.jQuery;
+$(document).ready(function(){
+	$.urlParam = function(name){
+	    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+	    if (results==null){
+	       return null;
+	    }
+	    else{
+	       return decodeURI(results[1]) || 0;
+	    }
+	}
+	if($.urlParam('id_estado')!=null){
+		$("#admin_estado").val($.urlParam('id_estado'))
+	}
+});
+$(function()
+{
+	$("#changelist-filter a").click(function(){
+		$("#loady").fadeIn();
+	});
+    $("#filtersH").submit(function()
+    {
+    	if($("#admin_estado").val()==''){
+    		$("#admin_estado").attr("disabled", "disabled");
+    	}
+    	$("#loady").fadeIn();
+        return true; // ensure form still submits
+    });
+});
+</script>
+{% endblock %}
+{% block pagination %}{% endblock %}

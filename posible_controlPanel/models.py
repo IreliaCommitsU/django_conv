@@ -9,6 +9,7 @@ from django.db import models
 
 class Proyectos(models.Model):
     uuid_usuario = models.CharField(max_length=250, blank=True, null=True)
+    email = models.CharField(max_length=100, blank=True, null=True)
     status = models.CharField(max_length=8, blank=True, null=True)
     fecha_envio_a_revision = models.DateTimeField(blank=True, null=True)
     privado = models.IntegerField()
@@ -56,7 +57,7 @@ class Proyectos(models.Model):
     modulo_5_3 = models.CharField(max_length=250, blank=True, null=True)
     modulo_5_3_otro = models.TextField(blank=True, null=True)
     modulo_5_4 = models.CharField(max_length=250, blank=True, null=True)
-    modulo_5_4_otro = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    modulo_5_4_otro = models.CharField(max_length=250, blank=True, null=True)
     modulo_5_5 = models.TextField(blank=True, null=True)
     
     modulo_6_1 = models.CharField(max_length=250, blank=True, null=True)
@@ -112,6 +113,7 @@ class ModuleAssets(models.Model):
 
 class Encuesta(models.Model):
     uuid = models.CharField(max_length=250, blank=True, null=True)
+    email = models.CharField(max_length=100, blank=True, null=True)
     pregunta1 = models.CharField(max_length=250, blank=True, null=True)
     pregunta2 = models.CharField(max_length=250, blank=True, null=True)
     pregunta3 = models.CharField(max_length=250, blank=True, null=True)

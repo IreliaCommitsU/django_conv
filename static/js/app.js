@@ -5,7 +5,7 @@ $(document).ready(function(){
   //BEHAVOURS FOR SOME CONTROLLERS
   initRestrict();
   label322();
-  pesosSign();
+  //pesosSign();
   cropAndLoad();
   trigger_ck('infoExitosa');
   trigger_ck('trigger');
@@ -37,7 +37,10 @@ $(document).ready(function(){
     preloader: false,
     fixedContentPos: false
   });
-
+  $("#id_id_estado").change(function(){
+    $("#id_municipio").val('');
+    $("#profile_f").submit();
+  });
 // TOGGLE LOGIN-REG IN LOGIN
   login_reg_handler();
 //TOGGLE VIDEOS SECTION
@@ -49,19 +52,6 @@ $(document).ready(function(){
 //SUBMIT FOR CHANGE PSW
   changePSW();
 
-// JUST DEPRECATED SOON
-/*  var div = $("#scrollMenuLogo");
-  var pos = div.position();
-  $(window).scroll(function () {
-    var windowpos = $(window).scrollTop();
-    if (windowpos >= 50) {
-      div.removeClass("hide");
-    }
-    else {
-      div.addClass("hide");
-    }
-  });
-*/
 //INITIALIZATION FOR SIDE MENU (NOT STILL IMPLEMENTED)
   //new gnMenu( document.getElementById( 'gn-menu' ) );
 

@@ -22,19 +22,19 @@ class SociosMultiWidget(MultiWidget):
         _widgets = (
             TextInput(attrs=attrs,), 
             TextInput(attrs=attrs,),
-            TextInput(attrs=attrs,),
+            TextInput(attrs={'placeholder': '140 caracteres','maxlength':'140',},),
             
             TextInput(attrs=attrs,), 
             TextInput(attrs=attrs,),
-            TextInput(attrs=attrs,),
+            TextInput(attrs={'placeholder': '140 caracteres','maxlength':'140',},),
             
             TextInput(attrs=attrs,), 
             TextInput(attrs=attrs,),
-            TextInput(attrs=attrs,),
+            TextInput(attrs={'placeholder': '140 caracteres','maxlength':'140',},),
             
             TextInput(attrs=attrs,), 
             TextInput(attrs=attrs,),
-            TextInput(attrs=attrs,),
+            TextInput(attrs={'placeholder': '140 caracteres','maxlength':'140',}),
             )
         super(SociosMultiWidget, self).__init__(_widgets, attrs)
 

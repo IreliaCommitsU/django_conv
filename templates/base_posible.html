@@ -6,7 +6,7 @@
     <title>{% block title %}DEMO TITLE{% endblock %}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" href="{% static 'css/soldai.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/soldai.css' %}?v=2.0"/>
 	<link rel="stylesheet" href="{% static 'css/foundation.css' %}"/>
 	<link rel="stylesheet" href="{% static 'foundation-icons/foundation-icons.css' %}"/>
 	<link rel="stylesheet" href="{% static 'css/normalize.css' %}"/>
@@ -16,11 +16,12 @@
 	<link rel="stylesheet" href="{% static 'slick/slick-theme.css' %}"/>
 	<link rel="stylesheet" href="{% static 'css/croppie.css' %}"/>
 	<link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}"/>
-	<link rel="stylesheet" href="{% static 'css/app.min.css' %}"/>
+	<link rel="stylesheet" href="{% static 'css/app.min.css' %}?v=4.5"/>
   </head>
   {% block script_todos %}
+  <!--TODOS-->
   <!-- Facebook Pixel Code -->
-<!--  <script>
+<script>
   !function(f,b,e,v,n,t,s)
   {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
   n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -33,7 +34,7 @@
   fbq('track', 'PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1691200764496972&ev=PageView&noscript=1"
-/></noscript>-->
+/></noscript>
 <!-- End Facebook Pixel Code -->
   {% endblock %}
   {% block script_ty %}
@@ -41,7 +42,7 @@
   {% block script_login %}
   {% endblock %}
   <body>
-	<!-- Global site tag (gtag.js) - Google Analytics 
+	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-46247771-9"></script>
 	<script>
 	  window.dataLayer = window.dataLayer || [];
@@ -49,9 +50,7 @@
 	  gtag('js', new Date());
 	
 	  gtag('config', 'UA-46247771-9');
-	</script>-->
-  
-  
+	</script>
 	{% block header %}
 	{% include "base_header.html" %}
 
@@ -73,12 +72,14 @@
 	<script src="{% static 'js/slick/slick.min.js' %}"> </script>
 	<script src="{% static 'js/sidebar/classie.js' %}"> </script>
 	<script src="{% static 'js/sidebar/gnmenu.js' %}"> </script>
-	<script src="{% static 'js/posible/pos_library.js' %}"></script>
-	<script src="{% static 'js/app.js' %}"></script>
+	<script src="{% static 'js/posible/pos_library.js' %}?v=3.0"></script>
+	<script src="{% static 'js/app.js' %}?v=2.0"></script>
 	<!--insertar antes del cierre de body-->
-	<script src="http://soldai.com/api_files/v2/hermes.plugin.js"></script>
+	<script src="https://soldai.com/api_files/v3/cookie.js"></script>
+	<script src="https://soldai.com/api_files/v3/uuid.js"></script>
+	<script src="https://soldai.com/api_files/v3/hermes.plugin.js"></script>
 	<script type="text/javascript">
-	$(function(){$('#chatHermes').hermes({key:'e2223bcdd44fc682132ba41d25f44efdb957036a',title:'Posible',css:true,form:false}); });
+	$(function(){$('#chatHermes').hermes({key:'e2223bcdd44fc682132ba41d25f44efdb957036a',title:'¿Tienes alguna duda?'}); });
 	</script>
 	<!--fin código-->
   </body>

@@ -5,11 +5,82 @@ from posible_login_reg.models import Usuarios, Referencias
 from posible_login_reg.helpers import randomPSWcode, get_client_ip
 from django.http.response import Http404
 from django.template.loader import get_template
+from django.views import View
 import re
 
 EMAIL_REGEX = re.compile(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
+class log_in_class(View):
+    template_name='login_reg/loginReg.html'
+    def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('/principal/')
+        has_pcd = request.GET.get('pcd','') !=''
+        is_good = request.GET.get('good','') !=''
+        is_bad = request.GET.get('bad','') !=''
+        return render(request, self.template_name,{'is_register':False,
+                                                              'has_pcd': has_pcd,
+                                                              'good': is_good,
+                                                              'bad': is_bad,
+                                                              })
+    def post(self,request):
+        if request.user.is_authenticated:
+            return redirect('/principal/')
+        correo = request.POST.get('e', '')
+        password = request.POST.get('p', '')
+        user = authenticate(request, email=correo, password=password)
+        if user is not None:
+            login(request, user,user.backend)   #LOG THE USER
+            return redirect('/principal/')      # Redirect to a success page.
+        else:
+            return render(request,self.template_name,{'is_register':False,'status_login':-3})# Return an 'invalid login' error message.
 
-
+class register_class(View):
+    template_name="login_reg/loginReg.html"
+    def get(self,request):
+        if request.user.is_authenticated:
+            return redirect('/principal/')
+        fb = request.GET.get('fb','')
+        al = request.GET.get('al','')
+        nw = request.GET.get('nw','')
+        tw = request.GET.get('tw','')
+        ip = get_client_ip(request)
+        now = timezone.now()
+        refer = 'web'
+        if fb == '1':
+            refer = 'fb_org_2018'
+        if fb == 'p':
+            refer = 'fb_pauta_2018'
+        if al == '1':
+            refer = 'aliados_2018'
+        if tw == '1':
+            refer = 'tw_2018'
+        if nw == '1':
+            refer = 'news_2018'
+        ref_obj = Referencias(ip=ip,referencia=refer,sitio='posible',fecha=now)
+        ref_obj.save()
+        return render(request,self.template_name,{'is_register':True})    
+    def post(self,request):
+        if request.user.is_authenticated:
+            return redirect('/principal/')
+        email = request.POST.get('e', '')
+        correoConf = request.POST.get('ce', '')
+        nombre = request.POST.get('n','')
+        if email == '' or correoConf == '' or nombre == '':
+            return render(request,self.template_name,{'status':-1}) #A FIELD IS EMPTY
+        else:
+            if email != correoConf:
+                return render(request,self.template_name,{'is_register':True,'status':-2}) #EMAILS NOT EQUAL
+            else:
+                #TODO:
+                if not EMAIL_REGEX.match(email):
+                    return  render(request,self.template_name,{'is_register':True,"status":-3}) #EMAIL IN BAD FORMAT
+                try:
+                    Usuarios.objects.get(email__iexact=email)
+                    return render(request,self.template_name,{'is_register':True,'status':-4}) #ALREADY HAS ACCOUNT
+                except Usuarios.DoesNotExist:
+                    Usuarios.objects.create_user(email, nombre)
+                    return redirect('/thanks/')
+        
 # Create your views here.
 def aviso(request):
     return render(request,'aviso_privacidad.html')
@@ -17,7 +88,7 @@ def aviso(request):
 def landing(request):
     return render(request, "login_reg/landing.html",{})
 
-def log_in(request):
+'''def log_in(request):
     if request.user.is_authenticated:
         return redirect('/principal/')
     else:
@@ -84,7 +155,7 @@ def register(request):
                 refer = 'news_2018'
             ref_obj = Referencias(ip=ip,referencia=refer,sitio='posible',fecha=now)
             ref_obj.save()
-            return render(request,"login_reg/loginReg.html",{'is_register':True})
+            return render(request,"login_reg/loginReg.html",{'is_register':True})'''
 
 
 def log_out(request):

@@ -1,5 +1,5 @@
 {% extends "base_posible.html"  %}
-{%block title %}Bienvenido a tu panel de control {% endblock %}
+{%block title %}Bienvenido a tu plataforma{% endblock %}
 
 {%load static %}
 {% block content %}
@@ -24,7 +24,7 @@
         <div class="cell small-12 medium-4 large 4 seasonMessages">
 			<div class="newsArea">
 				<div class="grid-x">
-                    <div class="cell small-12 medium-12 large-12"><a href="#"><img src="https://cdn.posible.org.mx/images/info/banner_intro.png"></a></div>
+                    <div class="cell small-12 medium-12 large-12"><img src="https://cdn.posible.org.mx/images/info/bannermin_intro.png"></div>
 				</div>
 			</div>
         </div>
@@ -47,7 +47,9 @@
   </div>
 </div>
 {%include 'controlPanel/popUP_changepassword.html'%}
-{%include 'controlPanel/popUP_infoRevisionExito.html'%}
+{%if info_box %}
+	{%include 'controlPanel/popUP_infoRevisionExito.html'%}
+{%endif%}
 {%if not tiene_encuesta %}
 	{%include 'controlPanel/popUP_encuesta.html'%}
 {% endif %}
