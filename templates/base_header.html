@@ -7,8 +7,11 @@
         <div class="top-bar-left">
           <ul data-dropdown-menu="data-dropdown-menu" data-options="disableHover:true;clickOpen:true" class="posibleTABS dropdown menu">
             <li class="togInfo genView"><a href="{{ request.scheme }}://{{ request.get_host }}/principal" id="visGen">Vista general de la cuenta</a></li>
+            
             <li class="togInfo profileEd"><a href="{{ request.scheme }}://{{ request.get_host }}/principal/perfil/" id="edPerfil">{%if ya_envio%}Ver{%else%}Editar{%endif%} perfil</a></li>
+            {% if etapa_convocatoria == 1 %}
             <li class="togInfo createProj"><a href="{{ request.scheme }}://{{ request.get_host }}/principal/nuevoProyecto/" id="newProy">Crear proyecto</a></li>
+            {% endif %}
             <li id="posNews" class="togInfo posibleNews"><a href="https://noticias.posible.org.mx" target="_blank" id="noticias">Noticias</a></li>
           </ul>
         </div>

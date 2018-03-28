@@ -1,74 +1,313 @@
 {% extends 'admin/change_list.html' %}
 {%load humanize %}
 {% block content_title %}
-    <h1> Resumen de Proyectos </h1>
-    <form id="filtersH" method="GET" action=".">
-    	<h3>Módulo 1</h3>
-		  <input type="radio" id="id_1_25" name="avance_modulo_1__gte" value="25"> <label for="id_1_25"> 25 %</label>
-		  <input type="radio" id="id_1_50" name="avance_modulo_1__gte" value="50">  <label for="id_1_50"> 50 %</label>
-		  <input type="radio" id="id_1_75" name="avance_modulo_1__gte" value="75">  <label for="id_1_75"> 75 %</label>
-		<h3>Módulo 2</h3>
-		  <input type="radio" id="id_2_25" name="avance_modulo_2__gte" value="25"> <label for="id_2_25"> 25 %</label>
-		  <input type="radio" id="id_2_50" name="avance_modulo_2__gte" value="50">  <label for="id_2_50"> 50 %</label>
-		  <input type="radio" id="id_2_75" name="avance_modulo_2__gte" value="75">  <label for="id_2_75"> 75 %</label>
-		<h3>Módulo 3</h3>
-		  <input type="radio" id="id_3_25" name="avance_modulo_3__gte" value="25"> <label for="id_3_25"> 25 %</label>
-		  <input type="radio" id="id_3_50" name="avance_modulo_3__gte" value="50">  <label for="id_3_50"> 50 %</label>
-		  <input type="radio" id="id_3_75" name="avance_modulo_3__gte" value="75">  <label for="id_3_75"> 75 %</label>
-		<h3>Módulo 4</h3>
-		  <input type="radio" id="id_4_25" name="avance_modulo_4__gte" value="25"> <label for="id_4_25"> 25 %</label>
-		  <input type="radio" id="id_4_50" name="avance_modulo_4__gte" value="50">  <label for="id_4_50"> 50 %</label>
-		  <input type="radio" id="id_4_75" name="avance_modulo_4__gte" value="75">  <label for="id_4_75"> 75 %</label>
-		<h3>Módulo 5</h3>
-		  <input type="radio" id="id_5_25" name="avance_modulo_5__gte" value="25"> <label for="id_5_25"> 25 %</label>
-		  <input type="radio" id="id_5_50" name="avance_modulo_5__gte" value="50">  <label for="id_5_50"> 50 %</label>
-		  <input type="radio" id="id_5_75" name="avance_modulo_5__gte" value="75">  <label for="id_5_75"> 75 %</label>
-		<h3>Módulo 6</h3>
-		  <input type="radio" id="id_6_25" name="avance_modulo_6__gte" value="25"> <label for="id_6_25"> 25 %</label>
-		  <input type="radio" id="id_6_50" name="avance_modulo_6__gte" value="50">  <label for="id_6_50"> 50 %</label>
-		  <input type="radio" id="id_6_75" name="avance_modulo_6__gte" value="75">  <label for="id_6_75"> 75 %</label>
-		<h3>Módulo 7</h3>
-		  <input type="radio" id="id_7_25" name="avance_modulo_7__gte" value="25"> <label for="id_7_25"> 25 %</label>
-		  <input type="radio" id="id_7_50" name="avance_modulo_7__gte" value="50">  <label for="id_7_50"> 50 %</label>
-		  <input type="radio" id="id_7_75" name="avance_modulo_7__gte" value="75">  <label for="id_7_75"> 75 %</label>
-    </form>
-<hr>
+<style>
+#resumen th {
+	border: 1px solid black;
+}
+</style>
+    <h2> Encuestas:</h2>
+    <a href="{{ request.scheme }}://{{ request.get_host }}/encuestas" class='button'>Presiona aquí para descargar</a>
+	<br/>
+	<br/>
+	
+	<hr>
+	<br>
+    <h1 > Resumen de Proyectos </h1>
+    <h3 style="text-align:center;">Avance total</h3>
+    <div class="container" style="text-align:center;">
+    <<a href="https://posible.org.mx/admin/posible_administrator/projectssummary/?avance_total__gte=0&avance_total__lte=25"> 0% a 25%</a>> -
+    <<a href="https://posible.org.mx/admin/posible_administrator/projectssummary/?avance_total__gt=25&avance_total__lte=50">25.1% a 50%</a>> -
+    <<a href="https://posible.org.mx/admin/posible_administrator/projectssummary/?avance_total__gt=50&avance_total__lte=75">50.1% a 75%</a>> -
+    <<a href="https://posible.org.mx/admin/posible_administrator/projectssummary/?avance_total__gt=75&avance_total__lte=90">75.1% a 90%</a>> -
+    <<a href="https://posible.org.mx/admin/posible_administrator/projectssummary/?avance_total__gt=90&avance_total__lte=100">90% a 100%</a>> -
+    <<a href="https://posible.org.mx/admin/posible_administrator/projectssummary/">Todos</a>> 
+    </div>
+    
+<div class="w3-bar w3-black">
+  <button class="w3-bar-item w3-button" onclick="openCity('Tokyo')">Resumen de proyectos</button> 
+  <button class="w3-bar-item w3-button" onclick="openCity('London')">Proyectos por estado</button>
+  <button class="w3-bar-item w3-button" onclick="openCity('Paris')">Proyectos a revisión por día</button>
+  
+</div>
 {% endblock %}
 
 {% block result_list %}
 <br><br>
-<div class="results">
-    <table>
-        
-    <thead>
-      <tr>
-        <th>
-          <div class="text">
-            <a href="#">Usuarios</a>
-          </div>
-        </th>
-        <th>
-          <div class="text">
-            <a href="#">Total</a>
-          </div>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-       <tr style=”font-weight:bold; border-top:2px solid #DDDDDD;”>
-            <td> Total </td>
-            <td> {{ summary_total.total |intcomma:False}} </td>
-       </tr>
-    </tbody>
-   
-  </table>
+<div id="Tokyo" class="w3-container city">
+<h1>Tabla de resumen de Proyectos</h1>
+	<div class="results">
+	    <table id= "resumen">
+	        
+	    <thead>
+	      <tr>
+	       
+	        <th colspan="1">
+	          <div class="text" style="text-align:center;">
+	            <a href="#">Proyectos en borrador</a>
+	          </div>
+	        </th>
+	        <th colspan="3">
+	          <div class="text" style="text-align:center;" >
+	            <a href="#" >Proyectos terminados suma</a>
+	          </div>
+	        </th>
+	        <th colspan="1">
+	          <div class="text" style="text-align:center;" >
+	            <a href="#">Total</a>
+	          </div>
+	        </th>
+	      </tr>
+	    
+	    	<tr>
+		    	<th colspan="1" >
+		          <div class="text" style="text-align:center;">
+		             {{summary_borrador | intcomma:False}}
+		          </div>
+		        </th>
+		    	<th colspan="3">
+		          <div class="text" style="text-align:center;">
+		           	{{summary_revision | add:summary_asignados | add:summary_evaluados |intcomma:False}}
+		          </div>
+		        </th>
+		    	<th colspan="1">
+		          <div class="text" style="text-align:center;">
+		            {{ summary_total.total |intcomma:False}}
+		          </div>
+		        </th>
+	    	</tr>
+	    	
+	    	<tr>
+	    	<th>
+	          <div class="text">
+	            
+	          </div>
+	        </th>
+	    	<th>
+	          <div class="text" style="text-align:center;">
+	            <a href="#">Proyectos enviados a revisión</a>
+	          </div>
+	        </th>
+	        <th>
+	          <div class="text" style="text-align:center;">
+	            <a href="#">Proyectos asignados</a>
+	          </div>
+	        </th>
+	        <th>
+	          <div class="text" style="text-align:center;">
+	            <a href="#">Proyectos evaluados</a>
+	          </div>
+	        </th>
+	        <th>
+	          <div class="text">
+	            
+	          </div>
+	        </th>
+	    	</tr>
+	    	<tr >
+	            <th> </th>
+	            <th style="text-align:center;"> {{summary_revision | intcomma:False}}  </th>
+	            <th style="text-align:center;"> {{summary_asignados | intcomma:False}}  </th>
+	            <th style="text-align:center;"> {{summary_evaluados | intcomma:False}}  </th>
+	            <th >  </th>
+	       </tr>
+	    </thead>
+	    <tbody>
+	    
+	
+	    </tbody>
+	   
+	  </table>
+	</div>
+
+<br><br>
+<h2 > Gráfica de "status" de proyectos en Borrador </h2>
+	<div >
+		<div class="ct-chart ct-golden-section" id="chart_projects" style="height:45vh;"></div>
+	</div>
+<br>
+</div>
+
+<div id="London" class="w3-container city" style="display:none">
+	<h1> Proyectos por estado </h1>
+	<div class="results">
+	    <table>
+	        
+	    <thead>
+	      <tr>
+	       <th>
+	          <div class="text">
+	            <a href="#">Estado</a>
+	          </div>
+	        </th>
+	        <th>
+	          <div class="text">
+	            <a href="#">Proyectos en borrador</a>
+	          </div>
+	        </th>
+	         <th>
+	          <div class="text">
+	            <a href="#">Proyectos enviados a revisión</a>
+	          </div>
+	        </th>
+	        <th>
+	          <div class="text">
+	            <a href="#">Proyectos asignados</a>
+	          </div>
+	        </th>
+	        <th>
+	          <div class="text">
+	            <a href="#">Proyectos evaluados</a>
+	          </div>
+	        </th>
+	        <th>
+	          <div class="text">
+	            <a href="#">Total</a>
+	          </div>
+	        </th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	       {% for row in edo_summary %}
+			      <tr class="{% cycle 'row1' 'row2' %}" {%if row.id_estado == 2 or row.id_estado == 20 or row.id_estado == 25%} style="color: #fff;font-weight: bold;background-color: #2026a5;" {%endif%}>
+			      	{%if row.id_estado == 0 or row.id_estado == None %}
+			      		<td> Sin registro de estado </td>
+			        {%else%}	
+			        	<td> {{ edo_vals|get_item:row.id_estado }}</td>
+			        {%endif%}
+			       	<td> {{ summaryEdoTest|get_item:row.id_estado|get_item:'borrador' | intcomma:False }} </td>
+			        <td> {{ summaryEdoTest|get_item:row.id_estado|get_item:'revision' | intcomma:False }} </td>
+			        <td> {{ summaryEdoTest|get_item:row.id_estado|get_item:'asignados' | intcomma:False }} </td>
+			        <td> {{ summaryEdoTest|get_item:row.id_estado|get_item:'evaluados' | intcomma:False }} </td>
+			        <td> {{ row.total | intcomma:False }} </td>
+			      </tr>
+			{% endfor %}
+	    </tbody>
+	   
+	  </table>
+	</div>
+
+</div>
+<!-- <br>
+<br>
+<hr>
+<br>-->
+<div id="Paris" class="w3-container city" style="display:none">
+	<h1> Proyectos enviados a Revisión cada día</h1>
+	<div class="results">
+	    <table>
+	        
+	    <thead>
+	      <tr>
+	       <th>
+	          <div class="text">
+	            <a href="#">Fecha</a>
+	          </div>
+	        </th>
+	        <th>
+	          <div class="text">
+	            <a href="#">Total proyectos enviados a Revisión</a>
+	          </div>
+	        </th>
+	         
+	      </tr>
+	    </thead>
+	    <tbody>
+	    
+	       {% for row in summaryProyectosFecha %}
+	       		{% if row.deit != None %}
+			      <tr class="{% cycle 'row1' 'row2' %}">
+					<td> {{ row.deit }} </td>
+			        <td> {{ row.total | intcomma:False }} </td>
+			      </tr>
+			      {%endif%}
+			{% endfor %}
+	    </tbody>
+	   
+	  </table>
+	</div>
 </div>
 <script>
 $ = django.jQuery;
-$(function()
-{
-	 
-});
+function openCity(cityName) {
+    var i;
+    var x = document.getElementsByClassName("city");
+    for (i = 0; i < x.length; i++) {
+       x[i].style.display = "none";  
+    }
+    document.getElementById(cityName).style.display = "block"; 
+    if(cityName == 'Paris'){
+    	//document.querySelector('#chart_edo').__chartist__.update();
+    }
+    if(cityName=='London'){
+    //	document.querySelector('#chart_period').__chartist__.update();
+    }
+}
 </script>
+
+<script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+<link href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css" rel="stylesheet" type="text/css" />
+
+<div id="graphContainer" style="width:50%;height:30%;">
+<div class="ct-chart ct-golden-section"></div>
+</div>
+<style>
+.ct-series-a .ct-bar, .ct-series-a .ct-line, .ct-series-a .ct-point, .ct-series-a .ct-slice-donut {
+    stroke: #0CC162;
+}
+</style>
+
+<script>
+/*new Chartist.Line('.ct-chart', {
+	  labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+	  series: [
+	    {name:'Green series',data:[2, 3, 2, 4, 5]},
+	    {name:'Red series',[0, 2.5, 3, 2, 3]},
+	    {name:'Yellow series',[1, 2, 2.5, 3.5, 4]}
+	  ]
+	});*/
+	var chart = new Chartist.Bar('#chart_projects', {
+		  labels: ['0% - 25%','25% - 50%','50% - 75%','75% - 90%','90% - 100%',],
+		  series: [[{{summary_0_25 | default_if_none:0}},
+			  		{{summary_25_50 | default_if_none:0}},
+			  		{{summary_50_75 | default_if_none:0}},
+			  		{{summary_75_90 | default_if_none:0}},
+			  		{{summary_90_100 | default_if_none:0}}]
+		  ]
+		},{
+		axisY: {
+			    onlyInteger: true,
+			    offset: 20
+		  	}
+		});
+/*var $tooltip = $('<div class="tooltip tooltip-hidden" style="float:left;background-color:black;color:white;padding: 1%; border-radius: 10px;position: relative;z-index: 10;"></div>').appendTo($('#chart_projects'));
+
+$(document).on('mouseenter', '.ct-point', function() {
+  var seriesName = $(this).closest('.ct-series').attr('ct:series-name'),
+      value = $(this).attr('ct:value');
+
+  $tooltip.text(seriesName + ': ' + value);
+  $tooltip.removeClass('tooltip-hidden');
+});
+
+$(document).on('mouseleave', '.ct-point', function() {
+  $tooltip.addClass('tooltip-hidden');
+});
+
+$(document).on('mousemove', '.ct-point', function(event) {
+	console.log('Y: '+ event.offsetY + 'X-orig: ' + event.originalEvent.layerY +'Tooltip: ' + ($tooltip.width() / 2));
+	x = parseInt(event.offsetX/$('#graphContainer').width()*100,10) + "%";
+	y = parseInt(event.offsetY/10,10) + "%";
+	console.log(x);
+  $tooltip.css({
+	  "margin-left": x,
+	  "margin-top": y
+	   
+  });
+});
+*/
+
+</script>
+
 {% endblock %}
 {% block pagination %}{% endblock %}

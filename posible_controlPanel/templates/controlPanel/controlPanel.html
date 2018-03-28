@@ -1,5 +1,5 @@
 {% extends "base_posible.html"  %}
-{%block title %}Bienvenido a tu plataforma{% endblock %}
+{%block title %}Bienvenido a tu plataforma {% endblock %}
 
 {%load static %}
 {% block content %}
@@ -18,13 +18,34 @@
       <div class="grid-x grid-padding-x textAreaNews">
         <div class="cell small-12 medium-8 large-8 greetingUser">
           <h3>¡Hola {{user.nombre}}! ¡Bienvenido a tu plataforma!</h3>
-          <h6>En esta pantalla podrás encontrar toda la información de la convocatoria, las fechas relevantes y crear modelos de negocio sobre tus ideas.</h6>
-          <br/>
+          {% if etapa_convocatoria == 1 %}
+          	<h6>En esta pantalla podrás encontrar toda la información de la convocatoria, las fechas relevantes y crear modelos de negocio sobre tus ideas.</h6>
+          {% elif etapa_convocatoria == 2 %}
+          	<h6>En esta pantalla podrás encontrar toda la información de la convocatoria, las fechas relevantes y <strong>¡Consultar los resultados en Mayo!</strong></h6>
+          {% elif etapa_convocatoria == 3 %}
+          	{% if winner %}
+          		<h6>Hemos pasado a la etapa de paneles, aquí podrás agendar un horario para presentar tu proyecto ante evaluadores personalmente. También podrás participar en el <strong>¡simulador de inversiones! (<a href ="" style="color:#fed401">Leer mas...</a>)</strong></h6>
+          	{% else %}
+          		<h6>En esta pantalla podrás encontrar toda la información de la convocatoria, las fechas relevantes y <strong>¡participar en el simulador de inversiones! (<a href ="" style="color:#fed401">Leer mas...</a>)</strong></h6>
+          	{% endif %}
+          	
+          {% endif %}
+          {%if showi %}<a id="phoneClick" href="https://vimeo.com/151132466/b4cc8b7525" target="_blank"><strong> Ver video de intro Phone otra vez </strong></a> 
+          <a href="https://vimeo.com/151132466" class="play--btn popup-vimeo button warning hide-for-small-only" > <strong> Ver video de intro PC otra vez </strong></a>
+          {% endif %}
         </div>
         <div class="cell small-12 medium-4 large 4 seasonMessages">
 			<div class="newsArea">
 				<div class="grid-x">
-                    <div class="cell small-12 medium-12 large-12"><img src="https://cdn.posible.org.mx/images/info/bannermin_intro.png"></div>
+                    <div class="cell small-12 medium-12 large-12">
+                    {% if etapa_convocatoria == 1 %}
+                    	<img src="https://cdn.posible.org.mx/images/info/bannermin_intro.png">
+                    {% elif etapa_convocatoria == 2 %}
+                    	<img src="https://placehold.it/500x260">
+                    {% elif etapa_convocatoria == 3 %}
+                    	<img src="https://placehold.it/500x260/000000/fed401">
+                    {% endif %}
+                    </div>
 				</div>
 			</div>
         </div>
@@ -36,10 +57,20 @@
 			{% include "controlPanel/controlPanel_profileSection.html" %}
         </div>
         <div class="cell small-12 medium-8">
-			{% if lista_p %}
-				{% include "controlPanel/controlPanel_projectSection.html" %}
-			{% else %}
-				<a href="./nuevoProyecto"> <img src="{% static 'img/mockup_NO_PROJECT.png' %}" style="padding-top: 5%;"/></a>
+        	{% if etapa_convocatoria == 1 %}
+				{% if lista_p %}
+					{% include "controlPanel/controlPanel_projectSection.html" %}
+				{% else %}
+					<a href="./nuevoProyecto"> <img src="{% static 'img/mockup_NO_PROJECT.png' %}" style="padding-top: 5%;"/></a>
+				{% endif %}
+			{% elif etapa_convocatoria == 2 %}
+				{% include "controlPanel/cp_prepingPanelSection.html" %}
+			{% elif etapa_convocatoria == 3 %}
+				{% if winner %}
+					{% include "controlPanel/cp_winnerSection.html" %}
+				{% else %}
+					{% include "controlPanel/cp_notSelectedSection.html" %}
+				{% endif %}
 			{% endif %}
         </div>
       </div>
@@ -47,21 +78,23 @@
   </div>
 </div>
 {%include 'controlPanel/popUP_changepassword.html'%}
-{%if info_box %}
-	{%include 'controlPanel/popUP_infoRevisionExito.html'%}
-{%endif%}
-{%if not tiene_encuesta %}
-	{%include 'controlPanel/popUP_encuesta.html'%}
-{% endif %}
-
-{% for p in lista_p %}
-	{%if p.type == 'project' %}
-		{%if p.avance == 100 and pAvance == 100 %}
-			{%include 'controlPanel/popUP_revision.html'%}
-		{%else%}
-			{%include 'controlPanel/popUP_revision_notComplete.html'%}
-		{% endif %}
+{% if etapa_convocatoria == 1 %}
+	{%if info_box %}
+		{%include 'controlPanel/popUP_infoRevisionExito.html'%}
+	{%endif%}
+	{%if not tiene_encuesta %}
+		{%include 'controlPanel/popUP_encuesta.html'%}
 	{% endif %}
-{%endfor%}
+	
+	{% for p in lista_p %}
+		{%if p.type == 'project' %}
+			{%if p.avance == 100 and pAvance == 100 %}
+				{%include 'controlPanel/popUP_revision.html'%}
+			{%else%}
+				{%include 'controlPanel/popUP_revision_notComplete.html'%}
+			{% endif %}
+		{% endif %}
+	{%endfor%}
+{% endif %}
 
 {% endblock %}

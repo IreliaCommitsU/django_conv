@@ -29,13 +29,22 @@ $(document).ready(function(){
   preg31();
   change_fn_PSW();
 // FOR DISPLAYING VIDEOS AS POP-UPS
-  $('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
+  $('.popup-youtube, .popup-gmaps').magnificPopup({
     disableOn: 700,
     type: 'iframe',
     mainClass: 'mfp-fade',
     removalDelay: 160,
     preloader: false,
     fixedContentPos: false
+  });
+  $('.popup-vimeo').magnificPopup({
+    disableOn: 700,
+    type: 'iframe',
+    mainClass: 'mfp-fade',
+    removalDelay: 160,
+    preloader: false,
+    fixedContentPos: false,
+    showCloseBtn: false
   });
   $("#id_id_estado").change(function(){
     $("#id_municipio").val('');
@@ -52,12 +61,45 @@ $(document).ready(function(){
 //SUBMIT FOR CHANGE PSW
   changePSW();
 
-//INITIALIZATION FOR SIDE MENU (NOT STILL IMPLEMENTED)
-  //new gnMenu( document.getElementById( 'gn-menu' ) );
 
-  trigger_ck('introVidFT');
+  if($(document).width() > 479) //DISABLED VIDEO BECAUSE IT DISAPPEARED, WHEN UPLOADED NEW PLS REACTIVATE BUT CHANGE PROFILE.HTML TO ADDRESS NEW VIDEO
+    trigger_ck('introVidFT');
+  else
+    trigger_ck('phoneClick');
+  
   loadVids();
+  loadVals();
 
+  redVals();
 //INITIALIZATION AN INSTANTIATION FOR DATEPICKERS
   initDatePickers();
+  $("#gn-menu")[0] && new gnMenu( document.getElementById( 'gn-menu' ) );
+  
+  	function mostrar(ev) {
+		num = ev.target.selectedIndex; 
+		var cop;
+		var copi;
+		obj = document.getElementById('c'+(num+1));
+		cop = document.getElementById('d'+(num+1));
+		copi = document.getElementById('e'+(num+1));
+		$(".direcciones").hide()
+		obj.style.display = 'block';
+		document.getElementById("direccionn").innerHTML = cop.innerText;
+		document.getElementById("dia2").innerHTML = copi.innerText;
+		document.getElementById("dia3").innerHTML = copi.innerText;
+	}
+  	$('#lugares')[0] && $('#lugares').change(mostrar);
+  	
+	$('#lugares')[0] && $('#lugares').change();
+	
+	$(function(){
+	    $('#lugares').change(function() {
+	        $('#sede2').text( $(this).val() );
+	    });
+	    
+	    $('#horass').change(function() {
+	        $('#hora2').text( $(this).val() );
+	    });    
+	});
+  
 });

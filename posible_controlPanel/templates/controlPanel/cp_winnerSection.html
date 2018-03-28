@@ -1,0 +1,65 @@
+<div class="grid-x">
+  <div class="cell small-12 medium-12 large-12">
+    <h4 class="titles" style="text-align: center;">¡Felicidades!</h4>
+  </div>
+  <div class="cell small-12">
+    <h5 class="subtitles"></h5>
+    {% if lista_w|length != 1 %}
+    	<p class="info" style="text-align: center;">Fuiste seleccionado a la etapa de paneles con los siguientes proyectos:</p>
+    {% else %}
+    	<p class="info"style="text-align: center;" >Fuiste seleccionado a la etapa de paneles con el siguiente proyecto:</p>
+    {% endif %}
+  </div>
+  <div class="cell small-12 medium-12 large-12 projectGrouped">
+		<div class="grid-x grid-padding-x">
+			{% for p in lista_w %}
+			<div class="cell small-12 {% if lista_w|length == 1 %} medium-12 large-12 
+					{% elif  lista_w|length == 2 %}
+					medium-6 large-6
+					{% elif  lista_w|length == 3 %}
+					medium-4 large-4
+					{% endif %}">
+				{% if p.type == 'project' %}
+					<div class="projectDiv_Section">
+			          <div class="grid-x grid-margin-x cardProjectMain">
+			            <div class="cell small-12 medium-12 large-12">
+			              <div style="background-image: url('{{p.img_url}}');" class="img_project"></div>
+			            </div>
+			            <div class="cell small-12 medium-12 large-12 cardProjectSummary">
+			              <h5 class="subtitles">Proyecto</h5>
+			              <p class="info">{{p.name}}</p>
+			              <div class="cell small-12 medium-12 large-12">
+			                <h5 class="subtitles">Folio</h5>
+							{%if p.f_rev %}
+			                		<p class="info"> {{p.f_rev|date:'Ymd'}}{{p.idn}} </p> 
+			                {%else%}
+			                	<p> *contacta a POSiBLE por tu folio </p>
+			                {% endif %}
+			                <br/>
+			              </div>
+			            </div>
+			          </div>
+			          <div class="grid-x grid-padding-x cardProjectOverlay" style="left:{% if lista_w|length == 2 %}3.7%; 
+					{% elif  lista_w|length == 1 %}
+					1.7%;
+					{% endif %}">
+			            <div class="cell small-12 medium-12 large-12 cardProjectInfo">
+			              <div class="grid-x">
+			                	{% if not p.cita %}
+			                	<div class="cell small-12 medium-12 large-12 projectButtons"><a href="./proyecto/{{p.idn}}/cita/" class="button warning"><strong>Registrar Cita</strong></a></div>
+			                	{% else %}
+			                	<div class="cell small-12 medium-12 large-12 projectButtons"><a href="./proyecto/{{p.idn}}/resumen/" class="button warning"><strong>Ver Detalles</strong></a></div>
+			                	{% endif %}
+			                	<div class="cell small-12 medium-12 large-12 projectButtons"><a href="./proyecto/{{p.idn}}/pdf/" class="button warning"><strong>Generar PDF</strong></a></div>
+			              </div>
+			            </div>
+			          </div>
+			        </div>
+				{% endif %}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+  
+  
+</div>

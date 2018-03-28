@@ -1,0 +1,49 @@
+{% extends "base_posible.html" %}
+{% load static %}
+
+{%block title %} ¡Bienvenido a tu sitio de la Convocatoria Sinaloa 2018! {% endblock %}
+{%block script_login %}
+<!--<script>
+  fbq('track', 'ViewContent');
+</script>-->
+{% endblock %}
+{% block header %} 
+	{% include "login_reg/login_header.html" %}
+{% endblock %}
+
+{% block content %}
+
+ <!--MAIN CONTENT-->
+ <div class="mainContent">
+   <div class="grid-x grid-padding-x">
+	  <div style="background-image: url(https://cdn.posible.org.mx/images/vert/posible.bajav2.png);background-size: 100% 100%;" class="cell small-12 medium-8 small-order-2 medium-order-1 infoBC">
+       <div class="Inicio pTabs">
+		<div class="shader">
+			<h1>¿QUIERES EMPRENDER?</h1>
+			<h4>INSCRÍBETE A LA CONVOCATORIA POSIBLE 2018</h4>
+			<h4>del 2 de febrero al 27 de abril </h4>
+         </div>
+         <br/>
+		 <br/>
+		 <br/>
+		 <br/>	
+		 <br/>		 
+         <!-- <p style="text-align:center;"><strong><a href="https://www.youtube.com/watch?v=W8kg1UpzvUI" class="warning button play--btn popup-youtube">VIDEO</a></strong></p> -->
+       </div>
+       <div class="Convocatoria pTabs hide">
+		<div style="text-align:center;padding-top: 3%;">
+			<a href="{% static 'docs/BC_Convocatoria_POSiBLE_2018.pdf' %}" target="_blank" class="button warning"><strong>Conoce la convocatoria</strong></a> 
+		</div>
+       </div>
+     </div>
+     <div class="cell small-12 medium-4 small-order-1 medium-order-2 credentialsCell">
+      	{% include "login_reg/login_regDiv.html" %}
+		{% include "login_reg/login_loginDiv.html" %}
+     </div>
+   </div>
+ </div>
+ <br>
+ {% include "login_reg/popUP_ForgotPSW.html" %}
+ {% include "login_reg/popUP_TermYcond.html" %}
+ {% include "login_reg/popUP_AVP.html" %}
+{% endblock %}

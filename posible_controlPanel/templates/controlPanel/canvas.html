@@ -35,12 +35,13 @@
 			      
 				  {% if mod_number == 7 %}
 				 	 <button class="button warning" name="go_revision" value="1" type="submit"><strong>Enviar a Revisión</strong></button>
+				 	 <button class="button warning" name="save_only" value="1" type="submit"><strong>Guardar</strong></button>
 				 {%else%}
 				 	 <button class="button warning" name="next" value="1" type="submit"><strong>Guardar y Continuar</strong></button>
 				 {% endif %}
 				 {% if not creacion %}
 				  <button class="button warning" name="save_exit" value="1" type="submit"><strong>Guardar y Salir</strong></button> 
-				  {% endif %}
+				 {% endif %}
 			 </div>
 			</form>                
         </div>

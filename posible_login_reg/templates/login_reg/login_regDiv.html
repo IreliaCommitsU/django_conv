@@ -12,6 +12,10 @@
 			</div>
 			<div class="cell small-12 medium-12 large-12">
 	  			<input id= "correo_conf" type="email" name="ce" placeholder="Verifica tu correo electrónico"/>
+	  			<input name="ma" id="m_a" type="hidden" >
+			</div>
+			<div class="cell small-12 medium-12 large-12">
+	  			<input id="pasw" type="password" pattern=".{6,}" required title="6 caracteres mínimos" name="pw" placeholder="Genera tu contraseña"/>
 			</div>
 			{% if status %}
 			<div class="cell small-12 medium-12 large-12">				
@@ -29,13 +33,17 @@
 			</div>
 			{% endif %}
 			<div class="cell small-12 medium-12 large-12 avpriv">
-	  			<input id="checkbox1" type="checkbox"/><label for="checkbox1">&nbsp;He leído y acepto el <strong> 
+	  			<input id="checkbox1" type="checkbox" required/><label for="checkbox1">&nbsp;He leído y acepto el <strong> 
 	  			<a href="#popup_ap">aviso de privacidad.</a></strong></label>
 			</div>
 			<div class="cell small-12 medium-12 large-12 termsandreg">
-			        <input id="checkbox2" type="checkbox"/><label for="checkbox2">&nbsp;He leído y acepto los <strong><a href="#popup_term">términos y condiciones</a></strong></label>
+			        <input id="checkbox2" type="checkbox" required/><label for="checkbox2">&nbsp;He leído y acepto los <strong><a href="#popup_term">términos y condiciones</a></strong></label>
 			</div>
-			<div class="cell small-4 medium-4 large-4"><strong><a href="" id="regSubmitButton" class="button warning">Registrarse</a></strong></div>
+			<div class="cell small-4 medium-4 large-4">
+			<input type="submit" value= "Registrarse" class="button warning" style="border-radius: 0px;font-weight: bold;"/>
+			<!-- <strong>
+			<a href="" id="regSubmitButton" class="button warning">Registrarse</a>
+			</strong> --></div>
 			<div class="cell small-12 medium-12 large-12">
  				<div class="grid-x">
    					<div class="cell small-12 medium-12 large-12"><a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}" class="button fb"> 

@@ -1,6 +1,22 @@
 {% load static %}
 <div style="width:100%;z-index:1000" class="grid-container">
-  <div data-sticky-container="" class="top-bar-container">
+	<div class="top-bar show-for-small-only">
+	  <ul id="gn-menu" class="gn-menu-main">
+	    <li class="gn-trigger"><a class="gn-icon gn-icon-menu" style="padding-top: 60%;"><span>menu</span></a>
+	      <nav class="gn-menu-wrapper">
+	        <ul class="gn-menu">
+	          <li><a href="https://posible.org.mx/" class="gn-icon gn-icon-earth">REGÍSTRATE</a></li>
+	          <li><a href="https://posible.org.mx/login" class="gn-icon gn-icon-earth">INICIAR SESIÓN</a></li>
+	          <li><a href="https://posible.org.mx/convocatoria" class="gn-icon gn-icon-help">CONVOCATORIA 2018</a></li>
+	          <li><a href="https://posiblelinx.com/" class="gn-icon gn-icon-archive" target="_blank">POSiBLE LINX</a></li>
+	          <li><a href="https://posibleplus.mx/" class="gn-icon gn-icon-archive" target="_blank">POSiBLE +</a></li>
+	        </ul>
+	      </nav>
+	    </li>
+	    <li style="padding-top: 2%;"><a href="https://posible.org.mx/"><img src="{% static 'img/logo/logo_negro.png'%}" alt="POSiBLE"></a></li>
+	  </ul>
+	</div>
+  <div data-sticky-container="" class="top-bar-container hide-for-small-only">
     <div data-sticky="data-sticky" data-options="anchor: page; marginTop: 0; stickyOn: small;" class="sticky sticky-topbar">
       <div class="top-bar posibleBar">
         <div id="scrollMenuLogo" class="top-bar-title"><a href="#"><img src="{% static 'img/logo/logo_negro.png'%}" alt="POSiBLE"/></a></div>

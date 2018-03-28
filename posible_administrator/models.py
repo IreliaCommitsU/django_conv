@@ -5,11 +5,11 @@ from posible_controlPanel.models import Proyectos
 class UsersSummary(Usuarios):
     class Meta:
         proxy = True
-        verbose_name = 'Resumen Usuario'
-        verbose_name_plural = 'Resumen Usuarios'
+        verbose_name = '1 Resumen Registro'
+        verbose_name_plural = '1 Resumen Registros'
 
 class ProjectsSummary(Proyectos):
     class Meta:
         proxy = True
-        verbose_name = 'Resumen Proyectos'
-        verbose_name_plural = 'Resumen Proyectos'
+        verbose_name = '2 Resumen Proyectos'
+        verbose_name_plural = '2 Resumen Proyectos'

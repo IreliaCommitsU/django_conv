@@ -82,6 +82,7 @@ class Proyectos(models.Model):
     avance_modulo_7 = models.IntegerField(blank=True, null=True)
     avance_total = models.IntegerField(blank=True, null=True)
     tags = models.CharField(max_length=255, blank=True, null=True)
+    id_estado = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -106,7 +107,8 @@ class ModuleAssets(models.Model):
     url = models.CharField(max_length=250, blank=True, null=True)
     texto = models.TextField(blank=True, null=True)
     active = models.IntegerField()
-
+    def __str__(self):
+        return self.title
     class Meta:
         managed = False
         db_table = 'module_assets'
@@ -156,46 +158,36 @@ class InversionistasSiguiendo(models.Model):
         db_table = 'inversionistas_siguiendo'
 
 
+
 class Paneles(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     fecha = models.DateField(db_column='FECHA', blank=True, null=True)  # Field name made lowercase.
     ciudad = models.CharField(db_column='CIUDAD', max_length=30, blank=True, null=True)  # Field name made lowercase.
     lugar = models.CharField(db_column='LUGAR', max_length=40, blank=True, null=True)  # Field name made lowercase.
     direccion = models.TextField(db_column='DIRECCION', blank=True, null=True)  # Field name made lowercase.
     interior = models.TextField(db_column='INTERIOR', blank=True, null=True)  # Field name made lowercase.
     referencias = models.TextField(db_column='REFERENCIAS', blank=True, null=True)  # Field name made lowercase.
-    mapa = models.CharField(db_column='MAPA', max_length=250, blank=True, null=True)  # Field name made lowercase.
+    mapa = models.CharField(db_column='MAPA', max_length=1000, blank=True, null=True)  # Field name made lowercase.
     virtual = models.IntegerField(db_column='VIRTUAL', blank=True, null=True)  # Field name made lowercase.
+    id_estado = models.IntegerField(db_column='id_Estado', blank=True, null=True)
+    url_mapa = models.CharField(db_column='URL_MAPA', max_length=250, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'paneles'
 
 
-class PanelesCalendario(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    panel = models.IntegerField(db_column='PANEL')  # Field name made lowercase.
-    hora = models.TimeField(db_column='HORA')  # Field name made lowercase.
-    proyecto = models.IntegerField(db_column='PROYECTO')  # Field name made lowercase.
-
+class PanelAgenda(models.Model):
+    id_panel = models.IntegerField(db_column='id_panel')
+    hora = models.TextField(db_column='hora')
+    id_proyecto = models.IntegerField(db_column='id_proyecto')
+    uuid = models.TextField(db_column='uuid')
+    email = models.TextField(db_column='email')
+    nombre_proyecto = models.TextField(db_column='nombre_proyecto')
+    link = models.FileField(upload_to='projectsPresentations/',null=True)
+    
     class Meta:
         managed = False
-        db_table = 'paneles_calendario'
-
-
-class PanelesProyectos(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    panel = models.IntegerField(db_column='PANEL')  # Field name made lowercase.
-    proyecto = models.IntegerField(db_column='PROYECTO')  # Field name made lowercase.
-    nombre = models.TextField(db_column='NOMBRE')  # Field name made lowercase.
-    emprendedor = models.TextField(db_column='EMPRENDEDOR')  # Field name made lowercase.
-    email = models.TextField(db_column='EMAIL')  # Field name made lowercase.
-    link = models.TextField(db_column='LINK')  # Field name made lowercase.
-    presentacion = models.IntegerField(db_column='PRESENTACION')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'paneles_proyectos'
+        db_table = 'paneles_agenda'
 
 class ProyectosAvances(models.Model):
     id_proyecto = models.IntegerField(blank=True, null=True)

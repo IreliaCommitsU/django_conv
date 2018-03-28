@@ -1,0 +1,85 @@
+{% extends "base_posible.html"  %}
+{% load static %}
+{%block title %} Agendar cita {% endblock %}
+
+{% block nameh1 %} Citas {% endblock %}
+
+{% block content %}
+<div class="profileContent">
+<div class="grid-x grid-padding-x">
+    	<div class="cell small-12 medium-12 large-12 moduleTitle">
+      		
+      			<font size=6><strong>Proyecto a agendar:</strong>	</font>
+      			<font size=5>
+      				{{proyecto.name}}
+      			</FONT>
+      		<br>
+      		<font size=6><strong>Folio del proyecto:</strong> </font>
+      		<font size=5>
+      		{{proyecto.f_rev|date:'Ymd'}}{{proyecto.idn}}
+
+      		</font>	
+		</div>
+		<div class="cell small-12 medium-12 large-12">
+			<form method="POST" enctype="multipart/form-data">
+			{% csrf_token %}
+				<div class="grid-x grid-padding-x grid-padding-y">
+					<div class="cell small-12 medium-4 large-4">
+						<label class="modelSubtitles" id = "sede">Sede</label>
+							<select id = "lugares" >
+            					{%for dato in datos%}
+           							<option value="{{forloop.counter}}">{{dato.lugar}}</option>
+            					{%endfor%}		
+            				</select>
+            					<label class="modelSubtitles" id="direccion">Dirección</label>
+            					{%for dato in datos %}
+	              					<div id="c{{forloop.counter}}" class="direcciones" style="display:none"><p id="d{{forloop.counter}}">{{dato.direccion}}</p>
+	            					<br>
+	            					<label class="modelSubtitles" id="mapa">Mapa</label>
+	            					<iframe src="{{dato.mapa}}" width="400" height="300" frameborder="0" style="border:0"></iframe>
+	            					<p></p>
+	            					<p align="center"><a href="{{dato.url_mapa}}" target="_blank">{{dato.url_mapa}}</a></p>
+	            					<br>
+	            					</div>
+               					{%endfor%}
+          					</div>
+          					<div class="cell small-12 medium-4 large-4">
+							<label class="modelSubtitles" id = "dia">Día</label>
+							{%for dato in datos %}
+          						<p id="e{{forloop.counter}}" style="display:none">{{dato.fecha|date:'d M Y'}}</p>
+          					{%endfor%}
+          					<span id="dia2"></span>
+          						<br>
+            					<label class="modelSubtitles" id="hora">Hora</label>
+          						{{form.hora}}
+          					</div>          					  
+          					<div class="cell small-12 medium-4 large-4">
+            					<label class="modelSubtitles">Resumen</label>
+            					<b>Sede </b>   <span id="sede2"></span>
+            					<br>
+            					<br>
+            					<b>Dirección</b> <span id="direccionn"></span>
+            					<br>
+            					 <br>
+            					<b>Día</b>	 <span id="dia3"></span>
+            					<br>
+            					 <br>
+            					<b>Hora</b> 	<span id="hora2"></span>
+            					<br>
+            					<br>
+								<button type="submit" class="button warning" value="1" ><strong>Confirmar</strong></button>
+								<br>
+								<p>
+								</p>
+								<p align = "left">Cualquier duda, 
+			   					favor de contactarnos a
+			   					<br> 
+			   					<a href="mailto:contacto@posible.org.mx"><font color="blue">contacto@posible.org.mx</a></p></font>
+            				</div>				          						 
+                		</div>               				  
+				</form>            
+    	</div>
+  	</div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,99 @@
+{% extends "base_posible.html"  %}
+{% load static %}
+{%block title %} Resumen cita {% endblock %}
+
+
+{% block content %}
+<div class="canvasContent">
+  <div class="grid-x grid-padding-x canvasContent">
+    <div class="cell small-12 medium-12 large-12 moduleTitle">
+      <h4><strong>Confirmación de cita</strong></h4>
+	</div>
+    	<div class="cell small-12 medium-12 large-12">
+        	<div class="cell small-12 medium-7 large-7">
+			<form method="post" action="{{url_action}}" enctype="multipart/form-data">							
+          			<div class="grid-x grid-padding-x grid-padding-y">
+			  				<div class="cell small-12 medium-6 large-6">
+            			<table>
+            			<tr>
+            				<th align="center">Proyecto</th>
+            				<td align="center">
+            				{{pa.nombre_proyecto}}
+            				</td>
+            			</tr>
+            			<tr> 
+            				<th align="center">Folio del proyecto</th>
+            				<td align="center">
+            					{{pa.fecha_envio_a_revision|date:'Ymd'}}{{pa.id}}
+            				</td>
+            				            				
+            			</tr>
+            			<tr>	
+            				<th align="center">Día</th>
+            				<td align="center">	
+								{{panel.fecha|date:'d M Y'}}
+            				</td>
+            			</tr>
+            			<tr>	
+            				<th align="center">Hora</th>
+            				<td align="center">
+			  					{{pa.hora}}
+            				</td>
+            			</tr>
+            			<tr>	
+            				<th align="center">Estado</th>
+            				<td align="center">
+            					{{estado}}
+            				</td>
+            			</tr>
+            			<tr>	
+            				<th align="center">Sede</th>
+            				<td align="center">
+								{{panel.lugar}}	
+            				</td>
+            			</tr> 
+            			<tr>	
+            				<th align="center">Dirección</th>
+            				<td align="center">
+			  					{{panel.direccion}}
+            				</td>
+            			</tr>       				
+            			<tr>	
+            				<th align="center">Referencias</th>
+            				<td align="center">
+			  					{{panel.referencias}}
+            				</td>
+            			</tr>
+            			</table>    
+            	            			        			
+                   </div>
+					<div class="cell small-12 medium-6 large-6">
+						<label class="modelSubtitles" id="mapa">Mapa</label>
+						<iframe src="{{panel.mapa}}" width="600" height="300" frameborder="0" style="border:0"></iframe>
+						<p></p>
+						<p align="center">
+						<a href="{{panel.url_mapa}}" target="_blank">{{panel.url_mapa}}</a></p>
+					</div>	 					
+                  </div>
+                  <br>
+                  <h5 align ="center"><strong> Presentación PowerPoint</strong></h5>
+                  <p align="center">Para guiarte en tu pitch, descarga la presentación de PowerPoint 
+			  	 para que la(s) llenes con los datos de tu proyecto y subirla en PDF</p>
+			   
+					  <div class="btn_canva_container">
+			   <p><a href="#" class="button warning" ><strong>Descargar desde aquí</strong></a>
+			 
+			   	<a href="#" class="button warning"><strong>Subir desde aquí</strong></a></p>
+			 
+
+				<a class="button warning"  href="{% url 'principal' %}"><strong>Volver al inicio</strong></a>
+				<p>
+				<br>
+			  </div>
+			</form>                
+        </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

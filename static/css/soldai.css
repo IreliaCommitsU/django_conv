@@ -205,3 +205,8 @@
   margin-top: -5px;
   margin-left: -5px;
 }
+@media (max-width: 479px) {
+ .hermes-container.minimize {
+   margin-bottom: 2px;
+}
+}

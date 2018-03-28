@@ -1,0 +1,43 @@
+{% extends "base_posible.html" %}
+{% load static %}
+
+{%block title %} ¡Bienvenido a tu sitio de la Convocatoria 2018! {% endblock %}
+{% block header %}
+	{% include 'thank_header.html' %}
+{% endblock %}
+
+{%block script_login %}
+{% endblock%}
+{%block content %}
+<div style="background-color:white; padding:0% 5% 5% 5%"> 
+	<div class="grid-x">
+		<div class="cell small-12">
+			<h1>Pantalla de Correos para Emprendedores Rezagados</h1>
+		</div>
+		{% if not sending %}
+
+		<div class="cell small-12">Hay  {{total_mails}} proyectos que fueron enviados a revision del  (26 de feb al 1ero de marzo)</div>
+
+	<hr>
+	<br>	
+		<form action="" method="POST">
+			{% csrf_token %}
+			
+			<p style="text-align:center;"><input type="submit" class="button warning" style="font-weight:bold" value="Enviar Correos"/></p>
+		</form>
+		{% else %}
+			<div class="cell small-12">
+				<h1> Enviados</h1>
+			</div>
+			<div class="cell small-12">
+				<p>Se enviaron {{total}} correos <p>
+				
+			</div>
+		{% endif %}
+
+	</div>
+</div>
+{% endblock %}
+
+
+

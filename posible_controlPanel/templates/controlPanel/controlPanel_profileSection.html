@@ -14,10 +14,16 @@
     <h5 class="subtitles">Teléfono 1 </h5>
     <p class="info">{%if user.tel_1%} {{user.tel_1_lada}} {{user.tel_1}} {% else %}&nbsp;{% endif %}</p>
   </div>
-  <div class="cell small-12">
-    <h5 class="subtitles">Progreso </h5>
-    <div role="progressbar" tabindex="0" aria-valuenow="{{pAvance}}" aria-valuemin="0" aria-valuetext="{{pAvance}}%" aria-valuemax="100" class="progress bigProgressBar warning"><span style="width: {{pAvance}}%" class="progress-meter">
-        <p class="progress-meter-text">{{pAvance}}%</p></span></div>
-  </div>
-  <div class="cell small-12 projectButtons"><a href="./perfil" class="button warning"><strong>{%if ya_envio%}Ver{%else%}Editar{%endif%} perfil  </strong></a></div>
+  {% if etapa_convocatoria == 1 %}
+	  <div class="cell small-12">
+	    <h5 class="subtitles">Progreso </h5>
+	    <div role="progressbar" tabindex="0" aria-valuenow="{{pAvance}}" aria-valuemin="0" aria-valuetext="{{pAvance}}%" aria-valuemax="100" class="progress bigProgressBar warning"><span style="width: {{pAvance}}%" class="progress-meter">
+	        <p class="progress-meter-text">{{pAvance}}%</p></span></div>
+	  </div>
+	  <div class="cell small-12 projectButtons"><a href="./perfil" class="button warning"><strong>{%if ya_envio%}Ver{%else%}Editar{%endif%} perfil  </strong></a></div>
+  {% else %}
+	  <div class="cell small-12">
+	  		{%include 'controlPanel/cp_projectSection_mini.html'%}
+	  </div>
+  {% endif %}
 </div>

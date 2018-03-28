@@ -1,0 +1,40 @@
+{%load static%}
+<div class="grid-x" style="
+    margin-top: 3%;
+    margin-bottom: 3%;
+">
+<div class="cell small-12 medium-2 large-2 "></div>
+<div class="cell small-12 medium-8 large-8 ">
+	<div class="registerDiv" style="
+	    background-color: rgba(0, 0, 0, 0.49);
+	    padding-top: 5%;
+	    padding-bottom: 5%;
+	    border-radius: 5%;
+	">
+		<h2 style="text-align:center;color:#fed401;">Registro</h2>
+			<form autocomplete="off" id="forms" style="width:90%; margin: 0 auto;">
+			<div class="grid-x align-center grid-padding-y">
+				<div class="cell small-12 medium-12 large-12">
+	  				<input id="nombre" type="text" name="n" placeholder="Tu Nombre(s)"/>
+				</div>
+				<div class="cell small-12 medium-12 large-12">
+		  			<input id="correo" type="email" name="e" placeholder="Correo electrónico"/>
+				</div>
+				<div class="cell small-12 medium-12 large-12">
+		  			<input id= "correo_conf" type="email" name="ce" placeholder="Verifica tu correo electrónico"/>
+		  			<input name="ma" id="m_a" type="hidden" >
+				</div>
+				<div class="cell small-12 medium-12 large-12">
+		  			<input id="pasw" type="password" pattern=".{6,}" required title="6 caracteres mínimos" name="pw" placeholder="Genera tu contraseña"/>
+				</div>
+				<div class="cell small-12 medium-12 large-12" style="text-align:center;">
+				<br/>
+				<input type="button" value= "Registrarse" class="button warning" style="border-radius: 0px;font-weight: bold;"/>
+				<br/>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<div class="cell small-12 medium-2 large-2 "></div>
+</div>

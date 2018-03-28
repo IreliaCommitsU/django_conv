@@ -65,6 +65,8 @@ class register_class(View):
         email = request.POST.get('e', '')
         correoConf = request.POST.get('ce', '')
         nombre = request.POST.get('n','')
+        m_alta = request.POST.get('ma','')
+        clave = request.POST.get('pw','')
         if email == '' or correoConf == '' or nombre == '':
             return render(request,self.template_name,{'status':-1}) #A FIELD IS EMPTY
         else:
@@ -78,7 +80,7 @@ class register_class(View):
                     Usuarios.objects.get(email__iexact=email)
                     return render(request,self.template_name,{'is_register':True,'status':-4}) #ALREADY HAS ACCOUNT
                 except Usuarios.DoesNotExist:
-                    Usuarios.objects.create_user(email, nombre)
+                    Usuarios.objects.create_user(email,clave, nombre,m_alta)
                     return redirect('/thanks/')
         
 # Create your views here.
@@ -87,76 +89,6 @@ def aviso(request):
 
 def landing(request):
     return render(request, "login_reg/landing.html",{})
-
-'''def log_in(request):
-    if request.user.is_authenticated:
-        return redirect('/principal/')
-    else:
-        if request.method == 'POST':
-            correo = request.POST.get('e', '')
-            password = request.POST.get('p', '')
-            user = authenticate(request, email=correo, password=password)
-            if user is not None:
-                login(request, user,user.backend)   #LOG THE USER
-                return redirect('/principal/')      # Redirect to a success page.
-            else:
-                return render(request,"login_reg/loginReg.html",{'is_register':False,'status_login':-3})# Return an 'invalid login' error message.
-        else:
-            has_pcd = request.GET.get('pcd','') !=''
-            is_good = request.GET.get('good','') !=''
-            is_bad = request.GET.get('bad','') !=''
-            
-            return render(request, 'login_reg/loginReg.html',{'is_register':False,
-                                                              'has_pcd': has_pcd,
-                                                              'good': is_good,
-                                                              'bad': is_bad,
-                                                              })
-
-def register(request):
-    if request.user.is_authenticated:
-        return redirect('/principal/')
-    else:
-        if request.method == 'POST':  
-            email = request.POST.get('e', '')
-            correoConf = request.POST.get('ce', '')
-            nombre = request.POST.get('n','')
-            if email == '' or correoConf == '' or nombre == '':
-                return render(request,"login_reg/loginReg.html",{'status':-1}) #A FIELD IS EMPTY
-            else:
-                if email != correoConf:
-                    return render(request,"login_reg/loginReg.html",{'is_register':True,'status':-2}) #EMAILS NOT EQUAL
-                else:
-                    #TODO:
-                    if not EMAIL_REGEX.match(email):
-                        return  render(request,"login_reg/loginReg.html",{'is_register':True,"status":-3}) #EMAIL IN BAD FORMAT
-                    try:
-                        Usuarios.objects.get(email__iexact=email)
-                        return render(request,"login_reg/loginReg.html",{'is_register':True,'status':-4}) #ALREADY HAS ACCOUNT
-                    except Usuarios.DoesNotExist:
-                        Usuarios.objects.create_user(email, nombre)
-                        return redirect('/thanks/')
-        else:
-            fb = request.GET.get('fb','')
-            al = request.GET.get('al','')
-            nw = request.GET.get('nw','')
-            tw = request.GET.get('tw','')
-            ip = get_client_ip(request)
-            now = timezone.now()
-            refer = 'web'
-            if fb == '1':
-                refer = 'fb_org_2018'
-            if fb == 'p':
-                refer = 'fb_pauta_2018'
-            if al == '1':
-                refer = 'aliados_2018'
-            if tw == '1':
-                refer = 'tw_2018'
-            if nw == '1':
-                refer = 'news_2018'
-            ref_obj = Referencias(ip=ip,referencia=refer,sitio='posible',fecha=now)
-            ref_obj.save()
-            return render(request,"login_reg/loginReg.html",{'is_register':True})'''
-
 
 def log_out(request):
     logout(request)
@@ -210,7 +142,7 @@ def forgot_PSW(request):
             code2 = randomPSWcode()
             us.codigo_seguridad = code
             message = get_template('forgot_template.html').render({'name':us.nombre,'url':'https://posible.org.mx/cambiarClave/?ref=%s&email=%s' % (code+code2 ,us.email)})
-            #us.email_user('Posible - Contraseña Olvidada',message, 'hola@posible.org.mx')
+            us.email_user('Posible - Contraseña Olvidada',message, 'hola@posible.org.mx')
             us.save()
             return redirect('/login/?good=1')
         except Usuarios.DoesNotExist:
@@ -219,9 +151,15 @@ def forgot_PSW(request):
             return redirect('/login/?bad=1')
     return redirect('/login/')
 
-def offline_registry(request): 
-    #TODO IN THE FUTURE
-    return 0
+def info_graphic(request):
+    return render(request, 'login_reg/infog.html')
+
+class offline_registry(View):
+    template_name="login_reg/offlinetv.html"
+    def get(self,request):
+        return render(request,self.template_name)
+        
+
 
 
         

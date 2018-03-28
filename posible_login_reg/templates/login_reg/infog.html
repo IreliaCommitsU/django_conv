@@ -1,0 +1,14 @@
+{% extends "base_posible.html"  %}
+{% load static %}
+{%block title %} Conoce las bases de POSiBLE 2018 {% endblock %}
+
+{% block header %}
+	{% include 'login_reg/login_header.html' %}
+{% endblock %}
+
+{% block content %}
+<div style="text-align:center;">
+	<img src="{%static 'img/vert_conv.png' %}" style="padding-top: 20%;">
+	<a href="{% static 'docs/CONVOCATORIA_2018_feb.pdf' %}" class="button warning" style='margin-top:-15%;margin-bottom: 10%;' target="_blank"><strong> Descargar convocatoria </strong></a>
+</div>
+{% endblock %}

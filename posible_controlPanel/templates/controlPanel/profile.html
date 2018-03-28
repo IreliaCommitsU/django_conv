@@ -3,9 +3,10 @@
 {% load static %}
 {% block content %}
 <div class="hack hide">
-  {% if ver_video %}
-    <a id="introVidFT" href="https://vimeo.com/151132466" class="play--btn popup-vimeo"></a>
-  {% endif %}
+	{% if ver_video %}
+		<a id="phoneClick" href="https://vimeo.com/151132466/b4cc8b7525" target="_blank"></a>
+		<a id="introVidFT" href="https://vimeo.com/151132466" class="play--btn popup-vimeo"></a>
+	{% endif %}
 </div>
 <div class="profileContent">
   <div class="grid-x grid-padding-x">
@@ -23,7 +24,7 @@
             											{% static 'docs/Oaxaca_Convocatoria_POSiBLE_2018.pdf' %}
             											{%elif vert == '1' %}
             											{% static 'docs/BC_Convocatoria_POSiBLE_2018.pdf' %}
-            											{%else%}#{% endif%}" target="_blank"><strong>Conoce la convocatoria estatal.</strong></a> </p>
+            											{%else%}#{% endif%}" target="_blank">Conoce la convocatoria estatal.</a> </p>
           </div>
     </div>
     <div class="cell small-12 medium-12 large-12">

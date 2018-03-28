@@ -1,0 +1,129 @@
+{% extends "base_posible.html" %}
+{% load static %}
+
+{%block title %} POSiBLE: Servicio de Asistencia, cambio de contraseña{% endblock %}
+{% block header %}
+	{% include 'thank_header.html' %}
+{% endblock %}
+
+{%block script_login %}
+{% endblock%}
+{%block content %}
+<div style="background-color:white;padding:0% 5% 5% 5%"> 
+	<div class="grid-x">
+		<div class="cell small-12 medium-12 large-12">
+			<h1>CAMBIADORA DE PASWORD</h1>
+			<h3>Instrucciones:</h3>
+			<ol>
+			<li>Buscar un email que te hayan reportado como error </li>
+			<li>Verifica que a) No tenga proyectos creados </li>
+			<li>Y que b)Sus datos personales no esten llenos</li>
+			</ol>
+			<p> Recuerda que podria tratarse de una SUPLANTACIÓN DE IDENTIDAD por lo que debes tener cuidado si las reglas de arriba no se cumplen</p>
+			<p> Consulta con las coordinadoras para tomar la mejor decisión</p>
+			<p style="color:green"> Puedes 1) Resetar su password y enviarle un correo, 2) Resetear su habilidad de poder volver a usar ¿Olvidaste tu contraseña? en el Login </p>
+			<p style="color:red"> Si el sistema te avisa que aparece más de una cuenta, AVISA PORFAVOR al ADMINISTRADOR DE SISTEMAS </p>
+		</div>
+		<hr>
+		<div class="cell small-12 medium-6 large-6">
+			<form action="" method="GET">
+				<div class="grid-x">
+					<div class="cell small-9 medium-9 large-9">
+						<label for="e_mail">Correo a buscar: </label><input id="e_mail" type="email" name="email" placeholder="Introduce un email válido">
+					</div>
+					<div class="cell small-3 medium-3 large-3" style="padding-top: 4%;">
+						<input type="submit" class="button warning" value="Buscar" style="font-weight: bold;"/>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<hr>
+	{% if show == 1 %}
+		<div id="resultados" class="grid-x grid-padding-y {% if not show %}hide{% endif %}">
+			<div class="cell small-12 medium-12 large-12">
+					<h3> Resultados de {{email}}</h3>
+					{% if numproys > 0 %}
+						<h5>Este usuario cuenta con <strong>{{numproys}}</strong> proyectos.</h5>
+					{% else %}
+						<h5>Este usuario <strong>NO</strong> cuenta con proyectos.</h5>
+					{% endif %}
+					
+					{% if num_acc > 1 %}
+						<h5> Parece ser que el usuario tiene más de una cuenta :(  <strong>¡{{num_acc}} Cuentas!</strong></h5>
+					{% endif %}
+					
+			</div>
+			<div class="cell small-12 medium-12 large-12">
+			<h5> Datos del usuario en su cuenta: </h5>
+			</div>
+			<div class="cell small-12 medium-6 large-6">
+		
+				<p><strong>Nombre: </strong> {{nombre|default_if_none:"--"}}</p>
+				<p><strong>Apellido: </strong> {{apellido|default_if_none:"--"}}</p>
+				<p><strong>Foto: </strong> {{foto}}</p>
+				<p><strong>Nacimiento: </strong> {{nacimiento|default_if_none:"--"}}</p>
+				<p><strong>Máximo grado de estudios: </strong> {{maximo_grado|default_if_none:"--"}}</p>
+				<p><strong>Escuela: </strong> {{escuela|default_if_none:"--"}}</p>
+				<p><strong>Identificador de estado: </strong> {{id_estado|default_if_none:"--"}}</p>
+				<p style="color:{%if has_block_pswRESET %} red {%else%} green {% endif %} "><strong>¿Puede usar "Olvidaste tu contraseña"?: </strong> {% if has_block_pswRESET %}  No, quiere decir que no puede restablecer su contraseña por sí solo (ayudalo con las opciones de abajo) {% else %} Sí, dile que puede usar "Olvidaste tu contraseña" en el Login {%endif%}</p>
+			</div>
+			<div class="cell small-12 medium-6 large-6">
+				<p><strong>Municipio: </strong> {{municipio|default_if_none:"--"}}</p>
+				<p><strong>Sexo: </strong> {{sexo|default_if_none:"--"}}</p>
+				<p><strong>Email: </strong> {{email|default_if_none:"--"}}</p>
+				<p><strong>Email alterno: </strong> {{email_alt|default_if_none:"--"}}</p>
+				<p><strong>Lada T1: </strong> {{tel_1_lada|default_if_none:"--"}} <strong>Teléfono 1: </strong> {{tel_1|default_if_none:"--"}}</p>
+				<p><strong>Lada T2: </strong> {{tel_2_lada|default_if_none:"--"}} <strong> Teléfono 2: </strong> {{tel_2|default_if_none:"--"}}</p>
+				<p><strong>¿Llenó cómo te enteraste?: </strong> {%if como_te_enteraste %} Si {%else%} No {%endif%}</p>
+				<p><strong>¿Llenó Socios?:  </strong> {%if socios %} Si {%else%} No {%endif%}</p>
+			</div>
+			<div class="cell small-12 medium-12 large-12">
+			<hr>
+				<h3>  Opciones a tomar:</h3>
+			</div>
+			<div class="cell small-12 medium-12 large-12">
+				{% if num_acc == 1 %}
+					<form method="POST">
+						{% csrf_token %}
+						<div class="grid-x">
+							<input type="hidden" name="cuenta" value="{{email}}">
+							<div class="cell small-12 medium-6 large-6">
+								<button class="button warning" name="psw_rst" value="1" type="submit"><strong>Resetear su contraseña  </strong></button> 
+							</div>
+							<div class="cell small-12 medium-6 large-6">
+								<button class="button warning" name="forgot_rst" value="1" type="submit"><strong> Resetear su contador de Olvidaste su Contraseña</strong></button>
+							</div>
+						</div>
+					</form>
+				{% else %}
+					<h3 style="color:red;"> La única opción en este caso de que tiene muchas cuentas, es hablar con el encargado de sistemas para que él elimine las cuentas extras. </h3>	
+				{% endif %}
+			</div>
+		</div>
+	{% elif show == 2 %}
+	<h2> ¡EL CORREO {{email}} NO EXISTE!</h2>
+	{% elif show == 3 %}
+		<h2>{{msg}}</h2>
+	{% elif show == 4 %}
+		<h2>{{msg}}</h2>
+		<h6> Copiar para correo (sugerencia: colocar en copia oculta un correo de fundación, para verificar que si se envió.): </h6>
+		<hr>
+		<p> <strong>Asunto: </strong> POSiBLE - Reestablecimiento de Contraseña </p>
+		<p><strong>Cuerpo del Correo: </strong></p>
+		<p>Buen día {{nombre}},</p>
+		<p>Por medio de este correo le informo que se ha reestablecido satisfactoriamente la contraseña de su cuenta.
+		<p>Esta es su contraseña:</p>
+		<p style="font-size:xx-large;text-align:center;"><strong>{{psw}}</strong></p>
+		<p>Le recomendamos ampliamente cambiarla en cuanto accese a la plataforma en la esquina superior derecha Opciones de Cuenta > Cambiar Contraseña.</p>
+		<p>Quedamos atentos a cualquier detalle y muchas gracias por su paciencia</p>
+		<p>Atentamente,</p>
+		<p> <strong>Equipo de asistencia técnica POSiBLE</strong> </p>
+	{% elif show == 0 %}
+		<h2 style="color:red">{{msg}}</h2>
+	{% endif %}
+</div>
+{% endblock %}
+
+
+

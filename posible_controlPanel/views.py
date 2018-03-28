@@ -5,70 +5,118 @@ from django.http.response import Http404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from posible_controlPanel.helpers import progressCalculator, is_mine, validateModules
-from posible_login_reg.models import Estados as es
-from posible_controlPanel.models import Proyectos, ModuleAssets, Encuesta
-from posible_controlPanel.forms import ProfileForm, PageOne, PageTwo, PageThree, PageFour, PageFive, PageSix, PageSeven, EncuestaForm,ProfileClosed
+from posible_login_reg.models import Estados as es, Estados
+from posible_controlPanel.models import Proyectos, ModuleAssets, Encuesta,\
+    Paneles, PanelAgenda
+from posible_controlPanel.forms import ProfileForm, PageOne, PageTwo, PageThree, PageFour, PageFive, PageSix, PageSeven, EncuestaForm,ProfileClosed,\
+    PanelAgendaForm
 from posible_controlPanel.pdfLibrary import PdfPrint
 from django.contrib.auth import logout
 from base64 import b64decode
-import bcrypt
+from django.views import View
 from _io import BytesIO
 from django.template.loader import get_template
+import bcrypt
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+conv_stage = 3 # THIS VARIABLE CONTROLS THE DISPLAY OF THE CONVOCATORIA CURRENT STATE: 1- Conv registry of ideas, 2- StandBy Before Panels, 3.- People selected for panels, etc.
 
 # Create your views here.
 @login_required(login_url='/login/')
 def control_panel(request):
-    #timezone lock
-    #nau = timezone.now()
-    #if request.user.email!='hugo.huipet@gmail.com':
-    #    logout(request)
-    #    return redirect('/thanks/')
-    res = request.GET.get('p','0')
+    if request.user.is_staff: #HACK TO LOGOUT ADMINS WHEN VISITING SITE TO PREVENT ERROR 500
+        logout(request)
+        return redirect('/login/')
+    
+    vid = request.user.porcentaje_perfil == None #FIRST TIME LOGIN -> REDIRECT TO PROFILE 
+    if vid:
+        return redirect('/principal/perfil/')
+    
+    res = request.GET.get('p','0') # CONTROLS REVISION EXITO POPUP DISPLAY.
     res = int(res) == 606
-    us =request.user
+    
+    us =request.user   #GET USER STATE NAME
     if us.id_estado:
         est = es.objects.get(id_estado=us.id_estado)
         est = est.estado
     else:
         est = None
-    vid = request.user.porcentaje_perfil == None
-    if vid:
-        return redirect('/principal/perfil/')
-        #request.user.porcentaje_perfil = 0
-        #request.user.save() 
-    pUser = Proyectos.objects.filter(email=us.email)
+
+    pUser = Proyectos.objects.filter(email=us.email) # GET PROJECTS OF USER, NEVER PROJECT GIVEN ID
     cPro = pUser.count()
-    lista_p = []
+    
+    lista_p = None
+    lista_w = None
     progreso_usr = round(progressCalculator(us))
+    if us.porcentaje_perfil != 100:
+        us.porcentaje_perfil = progreso_usr
+    
     has_encuesta = Encuesta.objects.filter(email=us.email).count() > 0 # False "no ha llenado encuesta" True "ya llenó encuesta"
     ya_envio = False
-    for ps in pUser:
-        if ps.status != 'borrador':
-            ya_envio = True
-        rem_mods = validateModules(ps)
-        lista_p.append( {
-                         'type':'project',
-                         'name':ps.modulo_2_1 ,
-                         'idn':ps.id,
-                         'status':ps.status,
-                         'f_rev' :ps.fecha_envio_a_revision,
-                         'img_url':ps.modulo_2_5.url, 
-                         'avance':ps.avance_total,
-                         'mod_faltan':rem_mods
-                        } 
-                       )
-    if cPro < 3: #REMAINING 'EMPTY' PROJECTS MUST RENDER AN OBJECT
-        for _ in range(0,3-cPro):
-            lista_p.append({'type':'EMPTY'})
-    enc = EncuestaForm()
+    winner = False
+    if conv_stage == 1:
+        lista_p=[]
+        for ps in pUser:
+            if ps.status != 'borrador':
+                ya_envio = True
+            rem_mods = validateModules(ps)
+            lista_p.append( {
+                             'type':'project',
+                             'name':ps.modulo_2_1 ,
+                             'idn':ps.id,
+                             'status':ps.status,
+                             'f_rev' :ps.fecha_envio_a_revision,
+                             'img_url':ps.modulo_2_5.url, 
+                             'avance':ps.avance_total,
+                             'mod_faltan':rem_mods
+                            } 
+                           )
+        if cPro < 3: #REMAINING 'EMPTY' PROJECTS MUST RENDER AN OBJECT
+            for _ in range(0,3-cPro):
+                lista_p.append({'type':'EMPTY'})
+        enc = EncuestaForm()
+    elif conv_stage == 2:
+        ya_envio = True
+        lista_p = [{'type':'project',
+                    'name':ps.modulo_2_1, 
+                    'idn':ps.id,
+                    'status':ps.status,
+                    'f_rev' :ps.fecha_envio_a_revision,
+                    'img_url':ps.modulo_2_5.url, 
+                    } for ps in pUser if ps.status != 'borrador']
+        enc = None
+    elif conv_stage == 3:
+        ya_envio = True
+        pa = PanelAgenda.objects.filter(email = us.email)
+        ya_agendados = [e.id_proyecto for e in pa]
+        lista_p = [{'type':'project',
+            'name':ps.modulo_2_1, 
+            'idn':ps.id,
+            'status':ps.status,
+            'f_rev' :ps.fecha_envio_a_revision,
+            'img_url':ps.modulo_2_5.url, 
+            } for ps in pUser if ps.status != 'borrador']
+        lista_w = [{'type':'project',
+            'name':ps.modulo_2_1, 
+            'idn':ps.id,
+            'status':ps.status,
+            'f_rev' :ps.fecha_envio_a_revision,
+            'img_url':ps.modulo_2_5.url, 
+            'cita':ps.id in ya_agendados,
+            } for ps in pUser if ps.status == 'paneles']
+        winner = len(lista_w) > 0
+        enc = None
+           
     return render(request,'controlPanel/controlPanel.html',{'estado':est,
                                                             'pAvance':progreso_usr,
                                                             'lista_p': lista_p,
+                                                            'lista_w':lista_w,
                                                             'form_encuesta':enc,
                                                             'tiene_encuesta':has_encuesta,
                                                             'ya_envio':ya_envio,
                                                             'info_box':res,
-                                                            
+                                                            'etapa_convocatoria': conv_stage,
+                                                            'winner':winner,
                                                             })
 
 @login_required(login_url='/login/')
@@ -140,6 +188,8 @@ def profileEditor(request):
     
 @login_required(login_url='/login/')
 def projectCreator(request):
+    if conv_stage != 1:
+        raise Http404
     us = request.user
     pUser = Proyectos.objects.filter(email=us.email).count()
     if pUser == 3:
@@ -165,6 +215,7 @@ def projectCreator(request):
             pInstance.avance_modulo_5=0
             pInstance.avance_modulo_6=0
             pInstance.avance_modulo_7=0
+            pInstance.id_estado = us.id_estado
             pInstance.save()
             if se == "1":
                 return redirect('/principal/')
@@ -193,6 +244,8 @@ def projectCreator(request):
 
 @login_required(login_url='/login/')
 def projectEditor(request, proyID, page):
+    if conv_stage != 1:
+        raise Http404
     #TO ENTER THIS VIEW EXISTENCE OF PROJECT IS MANDATORY
     proyID = int(proyID)
     page = int(page)
@@ -227,6 +280,7 @@ def projectEditor(request, proyID, page):
         se = request.POST.get('save_exit','')
         sc = request.POST.get('next','')
         ss = request.POST.get('go_revision','')
+        so = request.POST.get('save_only','')
         form = swtch[page](data=request.POST,files= request.FILES,instance=loadP) 
         if form.is_valid():
             pInstance = form.save(commit=False)
@@ -260,6 +314,9 @@ def projectEditor(request, proyID, page):
             elif sc=="1":
                 pInstance.save()
                 return redirect('/principal/proyecto/'+str(proyID)+'/'+str(page+1)+'/')
+            elif so == "1":
+                pInstance.save()
+                return redirect('/principal/proyecto/'+str(proyID)+'/'+str(page)+'/')
             elif ss == "1":
                 pInstance.save()
                 rem_mods = validateModules(pInstance)
@@ -303,6 +360,8 @@ def projectEditor(request, proyID, page):
 
 @login_required(login_url='/login/')
 def send_revision(request,proyID):
+    if conv_stage != 1:
+        raise Http404
     result = 404
     if request.method != 'POST':
         proyID = int(proyID)
@@ -320,9 +379,10 @@ def send_revision(request,proyID):
             now = timezone.now()
             loadP.fecha_envio_a_revision = now
             loadP.status = 'revision'
+            loadP.id_estado=us.id_estado
             loadP.save()
             message = get_template('controlPanel/folio_template.html').render({'name':us.nombre,'folio':now ,'id':loadP.id})
-            #us.email_user('Posible - Envio proyecto exitoso',message, 'hola@posible.org.mx')
+            us.email_user('Posible - Envio proyecto exitoso',message, 'hola@posible.org.mx')
             return redirect('/principal/?p=%s' % result )
     return redirect('/principal/?p=%s' % result )
 
@@ -361,6 +421,8 @@ def changePSW(request):
 
 @login_required(login_url='/login/')
 def encuesta_send(request):
+    if conv_stage != 1:
+        raise Http404
     if request.method == 'POST':
         form = EncuestaForm(data=request.POST)
         if form.is_valid():
@@ -369,16 +431,74 @@ def encuesta_send(request):
             eInstance.email = request.user.email
             eInstance.save()
         return redirect('/principal/')
+    
 
+class agendeo(LoginRequiredMixin,View):
+    login_url = '/login/'
+    def get(self,request, proyID):
+        us = request.user
+        proyID = int(proyID)
+        pUser = Proyectos.objects.filter(email=us.email,status='paneles',pk = proyID)
+        if pUser.count() == 0:
+            raise Http404
+        
+        has_agenda = PanelAgenda.objects.filter(id_proyecto = proyID,email=us.email).count() > 0 
+        if has_agenda:
+            return redirect('/principal/proyecto/'+str(proyID)+'/resumen/')
+        
+        datos_paneles = Paneles.objects.filter(id_estado=us.id_estado)
+        fAgenda_panel = PanelAgendaForm()
+        pUser = pUser.first()
+        proyecto_agendar = {
+                             'type':'project',
+                             'name':pUser.modulo_2_1 ,
+                             'idn':pUser.id,
+                             'f_rev': pUser.fecha_envio_a_revision,
+                            }  # ONLY RETURNS ONE PROJECT DEFINED BY PROYID
+        return render(request, 'controlPanel/agenda.html', {'form': fAgenda_panel, 
+                                                            'proyecto': proyecto_agendar, 
+                                                            'datos':datos_paneles,
+                                                            'etapa_convocatoria':conv_stage,
+                                                            'ya_envio':True
+                                                            })
+    def post(self,request,proyID):
+        form = PanelAgendaForm(data = request.POST)
+        if form.is_valid():
+            us = request.user
+            pa = form.save(commit = False)
+            proyID = int(proyID)
+            pUser = Proyectos.objects.filter(email=us.email,status = 'paneles', pk=proyID)
+            datos_paneles = Paneles.objects.filter(id_estado=us.id_estado)
+            
+            if pUser.count() == 0:
+                raise Http404
+            proyecto_agendado = pUser.first()
+            pa.id_panel = datos_paneles.first().pk # change to validation of panel
+            pa.id_proyecto = proyecto_agendado.id
+            pa.uuid = us.uuid
+            pa.email = us.email
+            pa.nombre_proyecto = proyecto_agendado.modulo_2_1
+            pa.save()
+        else:
+            print('no es valido')
+            print(form.errors)
+        return redirect('/principal/')
 
-
-
+class resumen(LoginRequiredMixin,View):
+    login_url = '/registro/'
+    def get(self, request,proyID):
+        us = request.user
+        proyID = int(proyID)
+        panel = None
+        try:
+            pa = PanelAgenda.objects.get(id_proyecto__iexact = proyID, email=us.email)
+            panel = Paneles.objects.get(pk = pa.id_panel)
+            estadoname = Estados.objects.get(pk = panel.id_estado)
+        except PanelAgenda.DoesNotExist:
+            raise Http404
+        return render(request,'controlPanel/resumen.html',{'pa':pa,'panel':panel,'estado':estadoname.estado, 'ya_envio':True})
 
 #TODO IN THE FUTURE
-@login_required(login_url='/login/')
-def panel_selection(request):
-    #FUTURE
-    return 0
 @login_required(login_url='/login/')
 def travel_tickets_selection(request):
     #FUTURE

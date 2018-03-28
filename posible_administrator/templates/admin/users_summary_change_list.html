@@ -1,11 +1,16 @@
 {% extends 'admin/change_list.html' %}
 {%load humanize %}
+{%load state_names %}
 {% block content_title %}
-    <h1> Resumen de usuarios </h1>
+	<h2> Sistema de Servicio para usuarios:</h2>
+    <a href="{{ request.scheme }}://{{ request.get_host }}/servicio" class='button'> Iniciar </a>
+	<br/>
+	<br/>
+    <h1> Resumen de registros </h1>
 	<form id="filtersH" method="GET" action=".">
     <label for="admin_estado">Filtrar por estados: </label>
 	<select name="id_estado" id="admin_estado">
-	  <option value=""></option>
+	  <option value="">-- Todos los estados --</option>
 	  <option value="1">Aguascalientes</option>
 	  <option value="2">Baja California</option>
 	  <option value="3">Baja California Sur</option>
@@ -46,36 +51,217 @@
 	<div id="loady" style="display:none;height:50px;width:50px; background-image: url(https://cdn.posible.org.mx/images/logos/loading.gif);background-position:center;background-size: 300% 300%;margin: 0 auto;"></div>
 	
 <hr>
+
+<br>
+<div class="w3-bar w3-black">
+  <button class="w3-bar-item w3-button" onclick="openCity('Tokyo')">Registros hoy por hora</button> 
+  <button class="w3-bar-item w3-button" onclick="openCity('London')">Registros del periodo</button>
+  <button class="w3-bar-item w3-button" onclick="openCity('Paris')">Registros por estado</button>
+  
+</div>
+
 {% endblock %}
 
 {% block result_list %}
-<br><br>
-<div class="results">
-    <table>
-        
-    <thead>
-      <tr>
-        <th>
-          <div class="text">
-            <a href="#">Usuarios</a>
-          </div>
-        </th>
-        <th>
-          <div class="text">
-            <a href="#">Total</a>
-          </div>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-       <tr style=”font-weight:bold; border-top:2px solid #DDDDDD;”>
-            <td> Total </td>
-            <td> {{ summary_total.total |intcomma:False}} </td>
-       </tr>
-    </tbody>
-   
-  </table>
+<br>
+<h3>El total del periodo es: {{ summary_total.total |intcomma:False}}</h3>
+<br>
+
+<div id="Tokyo" class="w3-container city">
+	<h2 > Gráfica de hoy por hora: </h2>
+	<div style="width:87%;height:100%;">
+		<div class="ct-chart ct-golden-section" id="chart_hour" style="height:45vh;"></div>
+	</div>
+	<br><br>
+	<h2 > Tabla de hoy por hora: </h2>
+	<div class="results">
+		<table>
+		    <thead>
+		      <tr>
+		        <th>
+		          <div class="text">
+		            <a href="#">Fecha</a>
+		          </div>
+		        </th>
+		        <th>
+		          <div class="text">
+		            <a href="#">Total</a>
+		          </div>
+		        </th>
+		       </tr>
+		     </thead>
+		     <tbody>
+		      {% for row in summary_today%}
+		      <tr class="{% cycle 'row1' 'row2' %}">
+		        <td> {{ row.deit}} hrs</td>
+		        <td> {{ row.total | intcomma:False }} </td>
+		      </tr>
+		      {% endfor %}
+		      <tr style="font-weight:bold; border-top:2px solid #DDDDDD;">
+            	<td> Total </td>
+            	
+            	<td> {{ summary_today_total.total | default:0 }} </td>
+        		</tr>
+		    </tbody>
+		  </table>
+	</div>
 </div>
+
+<div id="London" class="w3-container city" style="display:none">
+<h2 style="width:83%"> Gráfica del periodo: </h2>
+<h4>La gráfica sólo muestra los útlimos 20 días</h4>
+	<div style="width:87%;height:100%;">
+		<div class="ct-chart ct-golden-section" id="chart_period" style="height:45vh;"></div>
+	</div>
+<br><br>
+	<h2 style="width:85.5%"> Tabla por día del periodo: </h2>
+	<div class="results">
+		<table>
+		    <thead>
+		      <tr>
+		        <th>
+		          <div class="text">
+		            <a href="#">Fecha</a>
+		          </div>
+		        </th>
+		        <th style="background-color: #000;">
+		          <div class="text" style="color: #fff;">
+		            &nbsp; &nbsp;  Web
+		          </div>
+		        </th>
+		        <th style="background-color: #899bc1;">
+		          <div class="text" style="color: #FFF;" >
+		            &nbsp; &nbsp;FB orgánico
+		          </div>
+		        </th>
+		        <th style="background-color: #3B5998;">
+		          <div class="text" style="color: #FFF;">
+		            &nbsp; &nbsp;FB Pauta
+		          </div>
+		        </th>
+		        <th>
+		          <div class="text">
+		            <a href="#">Aliados</a>
+		          </div>
+		        </th>
+		        <th>
+		          <div class="text">
+		            <a href="#">Twitter</a>
+		          </div>
+		        </th>
+		        <th>
+		          <div class="text">
+		            <a href="#">Newsletter</a>
+		          </div>
+		        </th>
+		        <th>
+		          <div class="text">
+		            <a href="#">Messenger</a>
+		          </div>
+		        </th>
+		        <th>
+		          <div class="text">
+		            <a href="#">Tecnológicos</a>
+		          </div>
+		        </th>
+		        <th style="background-color: #89CF15;">
+		          <div class="text" style="color: #000;">
+		            &nbsp; &nbsp;Total
+		          </div>
+		        </th>
+		        
+		      </tr>
+		    </thead>
+		    <tbody>
+		      {% for row in summary %}
+		      <tr class="{% cycle 'row1' 'row2' %}">
+		        <td> {{ row.deit}} </td>
+		        <td> {{ summaryTest|get_item:row.deit|get_item:'web' | intcomma:False }} </td>
+		        <td> {{ summaryTest|get_item:row.deit|get_item:'fb_org_2018' | intcomma:False}}</td>
+		        <td> {{ summaryTest|get_item:row.deit|get_item:'fb_pauta_2018' | intcomma:False}} </td>
+		        <td> {{ summaryTest|get_item:row.deit|get_item:'aliados_2018' | intcomma:False}} </td>
+		        <td> {{ summaryTest|get_item:row.deit|get_item:'tw_2018' | intcomma:False}} </td>
+		        <td> {{ summaryTest|get_item:row.deit|get_item:'news_2018' | intcomma:False}} </td>
+		        <td> {{ summaryTest|get_item:row.deit|get_item:'messenger_2018' | intcomma:False}} </td>
+		        <td> {{ summaryTest|get_item:row.deit|get_item:'tecnologicos_2018' | intcomma:False}} </td>
+		        <td> {{ row.total | intcomma:False }} </td>
+		      </tr>
+		      {% endfor %}
+		    </tbody>
+		</table>
+	</div>
+	
+	
+</div>
+
+<div id="Paris" class="w3-container city" style="display:none">
+	<h2 style="width:83%"> Gráfica por estados: </h2>
+	<h4>(No se agregan los que no tienen estado porque dominan la gráfica)</h4>
+	<div id="graphContainer" style="width:87%;height:100%;">
+		<div class="ct-chart ct-golden-section" id="chart_edo" style="height:60vh;"></div>
+	</div>
+	<br><br>
+	<h2 style="width:83%"> Tabla por estados:</h2>
+	<div class="results">
+		<table>
+		    <thead>
+		      <tr>
+		      	<th style="width: 63%;">
+		          <div class="text">
+		            <a href="#">Estado</a>
+		          </div>
+		        </th>
+		        <th>
+		          <div class="text">
+		            <a href="#">Total</a>
+		          </div>
+		        </th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		      {% for row in edo_summary %}
+		      <tr class="{% cycle 'row1' 'row2' %}">
+		      	{%if row.id_estado == 0 or row.id_estado == None %}
+		      		<td> Sin registro de estado </td>
+		        {%else%}	
+		        	<td> {{ edo_vals|get_item:row.id_estado }}</td>
+		        {%endif%}
+		        <td> {{ row.total | intcomma:False }} </td>
+		      </tr>
+		      {% endfor %}
+		    </tbody>
+		</table>
+	</div>
+	
+
+
+</div>
+<script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+<link href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css" rel="stylesheet" type="text/css" />
+
+<style>
+.ct-chart-line{
+	overflow:visible;
+}
+.ct-series-a .ct-bar, .ct-series-a .ct-line, .ct-series-a .ct-point, .ct-series-a .ct-slice-donut{
+	stroke: #89CF15;
+}
+
+.ct-series-b .ct-bar, .ct-series-b .ct-line, .ct-series-b .ct-point, .ct-series-b .ct-slice-donut{
+	stroke: #000;
+}
+
+.ct-series-c .ct-bar, .ct-series-c .ct-line, .ct-series-c .ct-point, .ct-series-c .ct-slice-donut{
+	stroke: #899bc1;
+}
+
+.ct-series-d .ct-bar, .ct-series-d .ct-line, .ct-series-d .ct-point, .ct-series-d .ct-slice-donut{
+	stroke: #3B5998;
+}
+
+
+
+</style>
 <script>
 $ = django.jQuery;
 $(document).ready(function(){
@@ -106,6 +292,90 @@ $(function()
         return true; // ensure form still submits
     });
 });
+
+function openCity(cityName) {
+    var i;
+    var x = document.getElementsByClassName("city");
+    for (i = 0; i < x.length; i++) {
+       x[i].style.display = "none";  
+    }
+    document.getElementById(cityName).style.display = "block"; 
+    if(cityName == 'Paris'){
+    	document.querySelector('#chart_edo').__chartist__.update();
+    }
+    if(cityName=='London'){
+    	document.querySelector('#chart_period').__chartist__.update();
+    }
+    if(cityName=='Tokyo'){
+    	document.querySelector('#chart_hour').__chartist__.update();
+    }
+}
+new Chartist.Bar('#chart_edo', {
+	  labels: [	'Aguascalientes','Baja California','Baja California Sur','Campeche','Coahuila',
+		  'Colima','Chiapas','Chihuahua','CDMX','Durango','Guanajuato'
+		  ,'Guerrero','Hidalgo','Jalisco','Edo Mex','Michoacan','Morelos','Nayarit',
+		  'Nuevo Leon','Oaxaca','Puebla','Queretaro','Quintana Roo','San Luis Potosi',
+		  'Sinaloa','Sonora','Tabasco','Tamaulipas','Tlaxcala','Veracruz','Yucatan','Zacatecas'
+	  ],
+	  series: [
+	    [{% for row in edo_summary %}
+			{%if row.id_estado != 0 and row.id_estado != None %} 
+  				{{ row.total|default_if_none:0}},
+  			{%endif%}
+  		{% endfor %}]
+	  ]
+	});
+
+var lbls = [{% for row in summary %}
+	{% if forloop.counter <= 20 %}
+    '{{ row.deit}}',
+    {% endif %}
+  {% endfor %}];
+
+var s1 = [{% for row in summary %}
+			{% if forloop.counter <= 20 %}
+				{{ row.total |default_if_none:0}},
+			{% endif %}
+		{% endfor %}];
+var s2 = [{% for row in summary %}
+			{% if forloop.counter <= 20 %}
+			{{ summaryTest|get_item:row.deit|get_item:'web'|default_if_none:0 }},
+			{% endif %}
+		{% endfor %}];
+var s3 = [{% for row in summary %}
+			{% if forloop.counter <= 20 %}
+				{{ summaryTest|get_item:row.deit|get_item:'fb_org_2018'|default_if_none:0 }},
+			{% endif %}
+		{% endfor %}];
+var s4 = [{% for row in summary %}
+{% if forloop.counter <= 20 %}
+{{ summaryTest|get_item:row.deit|get_item:'fb_pauta_2018'|default_if_none:0 }},
+{% endif %}
+{% endfor %}];
+new Chartist.Line('#chart_period', {
+	  labels: lbls.reverse(),
+	  series: [s1.reverse(),
+		  s2.reverse(),
+		  s3.reverse(),
+		  s4.reverse()]
+	},{
+		axisY: {
+			    onlyInteger: true,
+			    offset: 20
+		  	}
+	});
+
+new Chartist.Line('#chart_hour', {
+	  labels: ["0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23"],
+	  series: [[{% for row in summary_today%}
+		{{ row.total|default_if_none:0}},
+		   {% endfor %}]]
+	},{
+		axisY: {
+			    onlyInteger: true,
+			    offset: 20
+		  	}
+	});
 </script>
 {% endblock %}
 {% block pagination %}{% endblock %}

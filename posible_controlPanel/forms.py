@@ -1,11 +1,11 @@
 from django import forms
 
 from posible_login_reg.models import Usuarios, CodigosPostales
-from posible_controlPanel.models import Proyectos, Encuesta
+from posible_controlPanel.models import Proyectos, Encuesta, PanelAgenda
 from django.utils.translation import gettext_lazy as _
 from posible_controlPanel.custom_widgets import NonClearableImageInput, SociosMultiWidget
 from posible_controlPanel.choices import *
-from posible_controlPanel.labels import *
+from posible_controlPanel.labels import LABELS_QUESTIONS
 from posible_controlPanel.helpers import jsonify
 
 MULTI_OPTION_MESSAGE = '* Puedes seleccionar más de una opción.'
@@ -516,10 +516,10 @@ class PageSeven(forms.ModelForm):
 class EncuestaForm(forms.ModelForm):
     pregunta1 =  forms.ChoiceField(widget = forms.RadioSelect,
                                    choices = NUMBERS_CHOICE,
-                                   label = _('1. ¿La explicación de los videos animados te ayudó a contestar las preguntas de los módulos?'),)
+                                   label = _('1. ¿La explicación de los videos animados te ayudo a contestar las preguntas de los módulos?'),)
     pregunta2 =  forms.ChoiceField(widget = forms.RadioSelect,
                                    choices = NUMBERS_CHOICE,
-                                   label = _('2. ¿La explicación de la mini clase (segundo video) de cada módulo te ayudó a conocer más sobre el tema?'),)
+                                   label = _('2. ¿La explicación de la mini clase (segundo video) de cada modulo te ayudó a conocer más sobre el tema?'),)
     
     pregunta3 =  forms.ChoiceField(widget = forms.RadioSelect,
                                    choices = NUMBERS_CHOICE,
@@ -527,7 +527,7 @@ class EncuestaForm(forms.ModelForm):
     
     pregunta4 =  forms.ChoiceField(widget = forms.RadioSelect,
                                    choices = NUMBERS_CHOICE,
-                                   label = _('4. ¿El modelo de negocio POSiBLE te ayudó a estructurar tu idea de manera clara y sencilla?'),)
+                                   label = _('4. ¿El Modelo de Negocio POSiBLE te ayudó a estructurar tu idea de manera clara y sencilla?'),)
     
     pregunta5 =  forms.ChoiceField(widget = forms.RadioSelect,
                                    choices = YES_NO,
@@ -655,3 +655,17 @@ class ProfileClosed(forms.ModelForm):
             listSocios=''
         self.cleaned_data['socios']=str(listSocios)
         return self.cleaned_data 
+    
+class PanelAgendaForm(forms.ModelForm):   
+    
+    hora = forms.ChoiceField(choices=horas)
+    
+    class Meta:
+        model = PanelAgenda
+        fields = [
+            'hora',
+        ]
+    
+    def __init__(self, *args, **kwargs):
+        super(PanelAgendaForm, self).__init__(*args, **kwargs)
+        self.fields['hora'].widget.attrs.update({'id': 'horass',})

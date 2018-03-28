@@ -383,13 +383,17 @@ function pageSwapper(){
       switch (ev.target.id) {
         case "ini":
           excepto = "Inicio";
-          $(".infoPosible").css('background-image','url(/static/img/posible.final.png)');
-          $(".infoSinaloa").css('background-image','url(https://cdn.posible.org.mx/images/vert/sinaloa.png)');
+          $(".infoPosible").css('background-image','url(/static/img/posible.marzo.png)');
+          $(".infoSinaloa").css('background-image','url(https://cdn.posible.org.mx/images/vert/sinaloa_v2.png)');
+          $(".infoOaxaca").css('background-image','url(https://cdn.posible.org.mx/images/vert/posible.oaxacav2.png)');
+          $(".infoBC").css('background-image','url(https://cdn.posible.org.mx/images/vert/posible.bajav2.png)');
         break;
         case "convo":
           excepto = "Convocatoria";
-          $(".infoPosible").css('background-image','url(https://cdn.posible.org.mx/images/vert/info_nacional2v2.png)')
-          $(".infoSinaloa").css({'background-image':'url(https://cdn.posible.org.mx/images/vert/info_sinaloa.png)','background-size': '100% 100%'})
+          $(".infoPosible").css('background-image','url(https://cdn.posible.org.mx/images/vert/info_nacionalv5.jpg)');
+          $(".infoSinaloa").css({'background-image':'url(https://cdn.posible.org.mx/images/vert/info_sinaloav3.png)','background-size': '100% 100%'});
+          $(".infoOaxaca").css('background-image','url(https://cdn.posible.org.mx/images/vert/info_oaxacav3.png)');
+          $(".infoBC").css('background-image','url(https://cdn.posible.org.mx/images/vert/info_bcv3.png)');
         break;
         case "vExp":
           excepto = "vCual";
@@ -438,4 +442,92 @@ function preg31(){
   $('#id_modulo_3_1_1').change(function(ev){
     toggle_enterprises_controls(ev.target.checked);
   });
+}
+
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
+
+function loadVals(){
+  var fb= getUrlParameter('fb');
+  var al = getUrlParameter('al');
+  var nw = getUrlParameter('nw');
+  var tw = getUrlParameter('tw');
+  var ms = getUrlParameter('ms');
+  var tec = getUrlParameter('TECNM');
+  var ref='web';
+  if(fb=='1'){
+    ref = 'fb_org_2018';
+  }else if(fb=='p'){
+    ref = 'fb_pauta_2018';
+  }
+  if(al=='1'){
+    ref = 'aliados_2018';
+  }
+  if(nw=='1'){
+    ref = 'news_2018';
+  }
+  if(tw=='1'){
+    ref = 'tw_2018';
+  }
+  if(ms=='1'){
+    ref = 'messenger_2018';
+  }
+  if(tec=='1'){
+  	ref = 'tecnologicos_2018';
+  }
+  if($("#m_a").length != 0)
+    $("#m_a").val(ref);
+}
+
+function checar(ev){
+  var control = $(ev.target);
+  //if(apellido == ""){
+  if(control.val().trim()==''){
+      control.css('border','2px solid red');
+  }else{
+      control.css('border','1px solid #cacaca');
+  }
+}
+
+function redVals(){
+  $('#id_nombre').change(checar);
+  $('#id_apellido').change(checar);
+  $('#id_municipio').change(checar);
+  $('#id_nacimiento').change(checar);
+  $('#id_maximo_grado').change(checar);
+  $('#id_escuela').change(checar);
+  $('#id_tel_1_lada').change(checar);
+  $('#id_tel_1').change(checar);
+  $('#id_tel_2_lada').change(checar);
+  $('#id_tel_2').change(checar);
+  $('#id_area_experiencia').change(checar);
+  $('#id_email_alt').change(checar);
+
+  $('#id_apellido').change();
+  $('#id_nombre').change();
+  $('#id_municipio').change();
+  $('#id_nacimiento').change();
+  $('#id_maximo_grado').change();
+  $('#id_escuela').change();
+  $('#id_tel_1_lada').change();
+  $('#id_tel_1').change();
+  $('#id_tel_2_lada').change();
+  $('#id_tel_2').change();
+  $('#id_area_experiencia').change();
+  $('#id_email_alt').change();
+  if($('#id_id_estado')[0] && $('#id_id_estado').val().trim()==''){
+    $('#id_id_estado').css('border','2px solid red');
+  }
 }
